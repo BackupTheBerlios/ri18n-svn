@@ -97,12 +97,17 @@ class I18nService
     end
   end
   
-# write a formated file with the english strings to translate
+  # write a formated file with the english strings to translate
   def write_pot
-    File.open("translations/en.template.rb", 
-              File::CREAT|File::WRONLY|File::TRUNC){|f|
-      f << msg_list.format_for_translation   
-}
+    fname = 'en.pot'
+    en_table = {}
+    @table.each_key{|k| en_table[k] = ""}
+    in_po_dir do
+      FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
+      File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
+        f << en_table.po_format   
+      }
+    end
   end
 
 end
