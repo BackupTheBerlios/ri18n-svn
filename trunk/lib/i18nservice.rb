@@ -47,6 +47,7 @@ class I18nService
   end  
   
   def update_languages(new_msgs)
+    write_pot(new_msgs)
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
   
@@ -98,14 +99,12 @@ class I18nService
   end
   
   # write a formated file with the english strings to translate
-  def write_pot
+  def write_pot(t)
     fname = 'en.pot'
-    en_table = {}
-    @table.each_key{|k| en_table[k] = ""}
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << en_table.po_format   
+        f << t.po_format   
       }
     end
   end
@@ -113,4 +112,7 @@ class I18nService
 end
 
 
+# set the default lang to nil; this is needed so that translators get loaded
+# even if the app that uses i18nservice does not set a language
+load 'ri18n/translators.rb' 
 

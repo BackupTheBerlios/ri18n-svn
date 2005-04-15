@@ -1,0 +1,9 @@
+msgid "loading french"
+msgstr "chargement de la langue Française"
+
+msgid "bye"
+msgstr "au revoir"
+
+msgid "hey"
+msgstr "eille"
+
