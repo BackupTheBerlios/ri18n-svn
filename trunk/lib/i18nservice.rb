@@ -3,7 +3,7 @@ $: << File.dirname(__FILE__)
 require 'singleton'
 require 'fileutils'
 
-require 'msglist'
+require 'ri18n/standard_exts'
 
 class I18nService
   include Singleton
@@ -17,7 +17,7 @@ class I18nService
   def lang=(l)
     unless ( @lang == l ) 
       @lang = l 
-      load 'translators.rb' 
+      load 'ri18n/translators.rb' 
     end
   end
 
@@ -95,6 +95,14 @@ class I18nService
         f << @table.po_format   
       }
     end
+  end
+  
+# write a formated file with the english strings to translate
+  def write_pot
+    File.open("translations/en.template.rb", 
+              File::CREAT|File::WRONLY|File::TRUNC){|f|
+      f << msg_list.format_for_translation   
+}
   end
 
 end
