@@ -4,6 +4,44 @@ require 'ri18n/msg'
 
 class MsgTest < Test::Unit::TestCase
   
+  E1 = <<ENTRY_END
+#  translator-comments
+#. automatic-comments
+#: reference...
+#, flag...
+msgid "untranslated-string"
+msgstr "translated-string"
+ENTRY_END
+
+  E2 = <<ENTRY_END
+#  translator-comments
+#. automatic-comments
+#: reference...
+#, flag...
+msgid "untranslated-string-singular"
+msgid_plural "untranslated-string-plural"
+msgstr[0] "translated-string-case-0"
+msgstr[1] "translated-string-case-1"
+msgstr[2] "translated-string-case-2"
+ENTRY_END
+
+  def test_parse
+    id, msg = Msg::Parse(E1)
+    assert_equal 'untranslated-string', id
+    assert_equal 'translated-string', msg
+    assert_equal nil, msg.id_plural
+    assert_equal nil, msg.plurals
+  end
+  
+  def test_parse_with_plural
+    id, msg = Msg::Parse(E2)
+    assert_equal 'untranslated-string-singular', id
+    assert_equal 'untranslated-string-plural', msg.id_plural
+    assert_equal(%w{translated-string-case-0 translated-string-case-1 translated-string-case-2},
+                 msg.plurals)
+    assert_equal('translated-string-case-0', msg)
+  end
+ 
   def test_parse_comments
     m = Msg.new('message', ['#  translator-comments', 
                   '#. automatic-comments',
