@@ -5,12 +5,24 @@ $: << File.dirname(__FILE__) + '/../../lib'
 require 'i18nservice'
 require 'i18nconfig'
 
-puts _('hey')
 
-puts _('loading french')
+class Duck
+  def talk
+    puts _('I talk like a duck')
+    puts _('Quack Quack !!')
+  end
+  def walk
+    puts _('I walk like a duck')
+  end
+end
 
+duck = Duck.new
+
+duck.talk
+duck.walk
+
+puts "----------- I18nService.instance.lang = 'fr' ----------------------"
 I18nService.instance.lang = 'fr'
 
-puts _('hey')
-
-puts _('bye')
+duck.talk
+duck.walk

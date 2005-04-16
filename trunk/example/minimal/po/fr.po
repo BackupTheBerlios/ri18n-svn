@@ -1,9 +1,9 @@
-msgid "loading french"
-msgstr "chargement de la langue Française"
+msgid "Quack Quack !!"
+msgstr "Coin Coin !!"
 
-msgid "bye"
-msgstr "au revoir"
+msgid "I talk like a duck"
+msgstr "Je parle comme un cannard"
 
-msgid "hey"
-msgstr "eille"
+msgid "I walk like a duck"
+msgstr "Je marche comme un cannard"
 
