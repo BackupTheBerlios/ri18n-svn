@@ -9,6 +9,9 @@ class  Hash
 
 end
 
+class Msg < String
+end
+
 class String
   def interpolate(b)
     eval('"' + self + '"', b)
