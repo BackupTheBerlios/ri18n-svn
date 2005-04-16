@@ -3,7 +3,7 @@ class Msg < String
   def Msg::Parse(entry)
       all, com, id, sel, str = *(ENTRY_REGEXP.match(entry))
       com = com ? com.split("\n") : []
-      id = id.strip_q
+      id.strip_q!
       if sel == 'str'
         str.strip_q!
         msg = ((str.empty?) ? nil : Msg.new(str, com ) )
