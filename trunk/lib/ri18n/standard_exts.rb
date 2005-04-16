@@ -9,13 +9,6 @@ class  Hash
 
 end
 
-class Msg < String
-  attr_reader :comments
-  def initialize(msg, comments)
-    super(msg)
-    @comments = comments
-  end
-end
 
 class String
   def interpolate(b)

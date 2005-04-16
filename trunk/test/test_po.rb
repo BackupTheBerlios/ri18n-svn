@@ -16,7 +16,10 @@ msgstr "deux"
 PO_END
 
   P3 = <<PO_END + P1
-# a comment
+#  translator-comments
+#. automatic-comments
+#: reference...
+#, flag...
 PO_END
 
   def test_parse_one
@@ -32,7 +35,10 @@ PO_END
     assert_equal({'one' => 'un'}, p3)
     
     assert_respond_to(p3['one'], :comments)
-    assert_equal(['a comment'], p3['one'].comments)
+    assert_equal(['#  translator-comments', 
+                  '#. automatic-comments',
+                  '#: reference...',
+                  '#, flag...'], p3['one'].comments)
     
   end
   

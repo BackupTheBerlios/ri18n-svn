@@ -1,6 +1,6 @@
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
-  ENTRY_REGEXP = /(?:#\s*(.*?)\n)?msgid\s+(.+)msgstr\s+(.*)/m
+  ENTRY_REGEXP = /(#[.,:]?\s*.*?\n)?msgid\s+(.+)msgstr\s+(.*)/m
   def parse
     ret = {}
     self.split(ENTRY_SEP).each{|s|
