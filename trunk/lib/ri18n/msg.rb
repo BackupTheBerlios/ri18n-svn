@@ -1,23 +1,12 @@
-require 'pp'
-
 class Msg < String
   ENTRY_REGEXP = /(#[.,:]?\s*.*?\n)?msgid\s+(.+?)msg(id_plural|str)\s+(.*)/m
-  attr_reader :comments, :reference, :flag
-  attr_accessor :plurals, :id_plural
   def Msg::Parse(entry)
-      entry =~ ENTRY_REGEXP
-      com, id, sel, str = [$1, $2, $3, $4]
+      all, com, id, sel, str = *(ENTRY_REGEXP.match(entry))
       com = com ? com.split("\n") : []
-      
-      if id.nil?
-        pp [com, id, sel, str]
-        pp entry 
-        exit
-      end 
-      id = id.strip[1..-2]
+      id = id.strip_q
       if sel == 'str'
-        str = str.strip
-        msg = ((str == '""') ? nil : Msg.new(str[1..-2], com ) )
+        str.strip_q!
+        msg = ((str.empty?) ? nil : Msg.new(str, com ) )
         [id, msg]
       else 
         [id, Msg::Plurals(str, com)]
@@ -26,20 +15,21 @@ class Msg < String
   
   MSGSTR_PLURAL_RE = /(.+?)(msgstr\[\d+\]\s+.+?)+/m
   def Msg::Plurals(entry, com)
-    entry =~ MSGSTR_PLURAL_RE
-    idp, pl = [$1, $2]
-    plurals = pl.strip.split(/msgstr\[\d+\]/).collect!{|mp| mp.strip[1..-2]}.compact
-    m = Msg.new(plurals[0], com)
-    m.plurals = plurals
-    m.id_plural = idp.strip[1..-2]
-    m
+    all, idp, pl = *(MSGSTR_PLURAL_RE.match(entry))
+    plurals = pl.strip.split(/msgstr\[\d+\]/).collect!{|mp| mp.strip_q}.compact
+    Msg.new(plurals[0], com, idp.strip_q, plurals)
   end
   
-  def initialize(msg, comments)
+  attr_reader :comments, :reference, :flag
+  attr_accessor :plurals, :id_plural
+  def initialize(msg, comments, idp=nil, pl=nil)
     super(msg)
     @comments = comments
     parse_comments
+    @id_plural = idp
+    @plurals = pl
   end
+  
   def parse_comments
     @reference = if r = @comments.find{|c| c =~ /\A#:/}
                     r[2..-1].strip
