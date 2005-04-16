@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rake/testtask'
+require 'rake/clean'
 
 task :default => [:test]
 

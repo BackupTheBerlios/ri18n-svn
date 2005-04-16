@@ -1,3 +1,5 @@
+require 'ri18n/msg'
+
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
   def parse
