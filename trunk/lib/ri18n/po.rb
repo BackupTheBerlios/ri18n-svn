@@ -1,12 +1,14 @@
 class PoSource < String
-
+  ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
+  ENTRY_REGEXP = /(?:#\s*(.*?)\n)?msgid\s+(.+)msgstr\s+(.*)/m
   def parse
     ret = {}
-    self.split(/(?:\n\n)|(?:\n \n)/m).each{|s|
-      s =~ /msgid\s+(.+)msgstr\s+(.*)/m
-      str = $2.strip
-      id = $1.strip[1..-2]
-      ret[id] = ((str == '""') ? nil : Msg.new(str[1..-2]) )
+    self.split(ENTRY_SEP).each{|s|
+      s =~ ENTRY_REGEXP
+      str = $3.strip
+      id = $2.strip[1..-2]
+      com = $1 ? $1.split("\n") : [] 
+      ret[id] = ((str == '""') ? nil : Msg.new(str[1..-2], com ) )
     }
     ret
   end
