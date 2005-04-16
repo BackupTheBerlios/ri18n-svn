@@ -4,6 +4,7 @@ require 'singleton'
 require 'fileutils'
 
 require 'ri18n/standard_exts'
+require 'ri18n/po'
 
 class I18nService
   include Singleton
@@ -62,16 +63,9 @@ class I18nService
   end
   
   def read_po(fn)
-    ret = {}
     in_po_dir do
-      File.read(fn).split(/(?:\n\n)|(?:\n \n)/m).each{|s|
-        s =~ /msgid\s+(.+)msgstr\s+(.*)/m
-        str = $2.strip
-        id = $1.strip[1..-2]
-        ret[id] = ((str == '""') ? nil : str[1..-2])
-      }
+      PoSource.new(File.read(fn)).parse
     end
-    ret
   end
   
   def try_load
