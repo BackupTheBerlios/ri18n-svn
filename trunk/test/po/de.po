@@ -1,7 +1,7 @@
-msgid "file"
-msgid_plural "files"
-msgstr[0] "datei"
-msgstr[1] "dateien"
+msgid "%i file"
+msgid_plural "%i files"
+msgstr[0] "%i datei"
+msgstr[1] "%i dateien"
 
 msgid "Road"
 msgstr "Straße"

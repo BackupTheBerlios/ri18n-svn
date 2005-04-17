@@ -30,16 +30,17 @@ class PluralTest < Test::Unit::TestCase
 	def test_plural_romanic
 		I18N.lang='fr'
 		
-		assert_equal 'fichier', n_('file', 'files', 0)
-		assert_equal 'fichier', n_('file', 'files', 1)
-		assert_equal 'fichiers', n_('file', 'files', 2)
+		assert_equal '0 fichier', n_('%i file', '%i files', 0)
+		assert_equal '1 fichier', n_('%i file', '%i files', 1)
+		assert_equal '2 fichiers', n_('%i file', '%i files', 2)
 	end
 
 	def test_plural_germanic
 		I18N.lang='de'
-		assert_equal 'dateien', n_('file', 'files', 0)
-		assert_equal 'datei', n_('file', 'files', 1)
-		assert_equal 'dateien', n_('file', 'files', 2)
+		
+		assert_equal '0 dateien', n_('%i file', '%i files', 0)
+		assert_equal '1 datei', n_('%i file', '%i files', 1)
+		assert_equal '2 dateien', n_('%i file', '%i files', 2)
 	end
 	
 	

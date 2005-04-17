@@ -15,9 +15,9 @@ end
 # plurals
 def n_(msgid, msgid_plural, n)
 	if ret = I18nService.instance.table[msgid]
-		ret.plurals[plural_form(n)]
+		sprintf(ret.plurals[plural_form(n)], n)
   else
-		msgid_plural
+		sprintf(msgid_plural, n)
 	end
 end
 
@@ -31,4 +31,7 @@ unless i18n.try_load
     string.interpolate(b)
   end
 
+	def n_(msgid, msgid_plural, n)
+		sprintf(msgid_plural, n)
+	end
 end

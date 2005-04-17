@@ -157,7 +157,7 @@ msgstr "Pages non-existantes dans #{@set_name} référencées par d'autres pages
 msgid "Feeds"
 msgstr "Feeds"
 
-msgid "file"
-msgid_plural "files"
-msgstr[0] "fichier"
-msgstr[1] "fichiers"
+msgid "%i file"
+msgid_plural "%i files"
+msgstr[0] "%i fichier"
+msgstr[1] "%i fichiers"
