@@ -4,15 +4,20 @@ require 'rubygems'
 require 'rake'
 
 class GettextScanner < String
-  MSG_PATTERN = /\W(?:n_|_|_i)\('(.+?)'\)/m
-	
+  SINGLE = "'(.+?)'"
+  DOUBLE = '"(.+?)"'
+  MSG_PATTERN_SINGLE = /\W_i?\(#{SINGLE}\)/mu
+	MSG_PATTERN_DOUBLE = /\W_i?\(#{DOUBLE}\)/mu
+  MSG_PATTERN_PLURAL = /\Wn_\(#{SINGLE},\s*#{SINGLE},\s*.+?\)/mu
 	def GettextScanner::Gettext(source)
 		GettextScanner.new(source).gettext
 	end
 	
   def gettext
-		self.scan(MSG_PATTERN).flatten.uniq
-	end
+		ret = (scan(MSG_PATTERN_SINGLE) + scan(MSG_PATTERN_DOUBLE)).flatten.uniq.sort
+	  ret += scan(MSG_PATTERN_PLURAL).uniq.sort
+    ret
+  end
 end
 
 class I18nFileList < Rake::FileList
