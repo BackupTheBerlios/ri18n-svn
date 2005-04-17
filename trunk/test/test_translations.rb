@@ -16,19 +16,33 @@ end
 
 class PluralTest < Test::Unit::TestCase
 
-  def setup
-		plural_setup
-  end
+	def test_plural_families
+		I18N.lang='en'
+		assert_equal :two_germanic, I18N.plural_family
 
-	def teardown
-		plural_teardown
+		I18N.lang='de'
+		assert_equal :two_germanic, I18N.plural_family
+		
+		I18N.lang='fr'	
+		assert_equal :two_romanic, I18N.plural_family
 	end
 
-	def test_plural
-		I18N.lang='plural'
+	def test_plural_romanic
+		I18N.lang='fr'
+		
+		assert_equal 'fichier', n_('file', 'files', 0)
+		assert_equal 'fichier', n_('file', 'files', 1)
 		assert_equal 'fichiers', n_('file', 'files', 2)
 	end
 
+	def test_plural_germanic
+		I18N.lang='de'
+		assert_equal 'dateien', n_('file', 'files', 0)
+		assert_equal 'datei', n_('file', 'files', 1)
+		assert_equal 'dateien', n_('file', 'files', 2)
+	end
+	
+	
 end
 
 class TranslationIOTest < Test::Unit::TestCase

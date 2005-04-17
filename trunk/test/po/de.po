@@ -1,3 +1,8 @@
+msgid "file"
+msgid_plural "files"
+msgstr[0] "datei"
+msgstr[1] "dateien"
+
 msgid "Road"
 msgstr "Straße"
 
