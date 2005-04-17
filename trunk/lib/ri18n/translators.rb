@@ -15,7 +15,7 @@ end
 # plurals
 def n_(msgid, msgid_plural, n)
 	if ret = I18nService.instance.table[msgid]
-		ret.plurals[n==0 ? 0 : 1]
+		ret.plurals[plural_form(n)]
   else
 		msgid_plural
 	end

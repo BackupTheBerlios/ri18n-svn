@@ -11,17 +11,34 @@ class I18nService
   attr_accessor :lang
   attr_accessor :table
   attr_accessor :po_dir
-  MSG_PATTERN = /_i?\('(.+?)'\)/m
+  
+	MSG_PATTERN = /_i?\('(.+?)'\)/m
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
-
+	PLURAL_FAMILIES = {:one => %w(hu ja ko tr),
+	:two_germanic => %w(da nl en de no sv et fi el he it pt es eo),
+	:two_romanic => %w(fr pt_BR)}
+	
   def lang=(l)
     unless ( @lang == l ) 
       @lang = l 
+			load 'ri18n/plural_forms.rb'
       load 'ri18n/translators.rb' 
     end
   end
 
+	def plural_family
+		if @lang
+			if found = PLURAL_FAMILIES.find{|fam, list| list.include?(@lang)}
+				found.first
+			else
+				:two_germanic
+			end
+		else
+			:two_germanic	
+		end
+	end
+	
   def in_po_dir
     wd = Dir.getwd
     ret = nil
