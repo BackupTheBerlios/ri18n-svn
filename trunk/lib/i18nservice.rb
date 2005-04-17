@@ -15,10 +15,16 @@ class I18nService
 	MSG_PATTERN = /_i?\('(.+?)'\)/m
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
-	PLURAL_FAMILIES = {:one => %w(hu ja ko tr),
+	PLURAL_FAMILIES = {
+	:one => %w(hu ja ko tr),
 	:two_germanic => %w(da nl en de no sv et fi el he it pt es eo),
-	:two_romanic => %w(fr pt_BR)}
-	
+	:two_romanic => %w(fr pt_BR),
+	:three_celtic => %w(ga gd),
+	:three_baltic_latvian => %w(lv),
+	:three_baltic_lithuanian => %w(lt),
+	:three_slavic_russian => %w(hr cs ru sk uk),
+	:three_slavic_polish => %w(pl),
+	:four => %w(sl)}
   def lang=(l)
     unless ( @lang == l ) 
       @lang = l 
