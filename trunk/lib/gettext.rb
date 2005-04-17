@@ -19,7 +19,8 @@ class I18nFileList < Rake::FileList
     ret
   end
   def update
-    I18N.update_languages(msg_list)
+	  I18N.write_pot(msg_list)
+		I18N.update_catalogs(msg_list)
   end
 end
 

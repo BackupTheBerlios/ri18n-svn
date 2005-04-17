@@ -70,8 +70,7 @@ class I18nService
     ret.collect{|path| File.basename(path, FILE_SUFFIX)}.sort
   end  
   
-  def update_languages(new_msgs)
-    write_pot(new_msgs)
+  def update_catalogs(new_msgs)
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
   
