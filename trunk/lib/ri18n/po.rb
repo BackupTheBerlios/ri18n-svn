@@ -1,5 +1,15 @@
 require 'ri18n/msg'
 
+class  Hash
+  
+  def po_format
+    ret = ''
+    each{|id, str| ret << "msgid \"#{id}\"\nmsgstr \"#{str}\"\n\n"}
+    ret
+  end
+
+end
+
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
   def parse

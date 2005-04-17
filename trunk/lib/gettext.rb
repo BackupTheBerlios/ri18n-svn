@@ -3,6 +3,14 @@ require 'ri18n/standard_exts'
 require 'rubygems'
 require 'rake'
 
+class IdPlural < String
+  attr_reader :plural
+  def initialize(id, id_plural)
+    super(id)
+    @plural = id_plural
+  end
+end
+
 class GettextScanner < String
   SINGLE = "'(.+?)'"
   DOUBLE = '"(.+?)"'
@@ -15,8 +23,15 @@ class GettextScanner < String
 	
   def gettext
 		ret = (scan(MSG_PATTERN_SINGLE) + scan(MSG_PATTERN_DOUBLE)).flatten.uniq.sort
-	  ret += scan(MSG_PATTERN_PLURAL).uniq.sort
-    ret
+	  plur = scan(MSG_PATTERN_PLURAL).uniq.collect!{|m|
+      case m
+      when String
+        m
+      when Array
+        IdPlural.new(*m)
+      end
+    }
+    ret + plur.sort
   end
 end
 

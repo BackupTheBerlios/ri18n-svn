@@ -24,7 +24,7 @@ END_SOURCE
 END_SOURCE
 
   S4 = <<END_SOURCE
-  blah blah
+  blah blah _('singular')
   <%= n_("%d file", "%d files", n)%> ("not me !!")
   <%= n_('%d time', '%d times', n) 'not "me !!'%>
 END_SOURCE
@@ -42,7 +42,10 @@ END_SOURCE
   end
   
   def test_plural
-    assert_equal([['%d time', '%d times']], GettextScanner::Gettext(S4))
+    g4 = GettextScanner::Gettext(S4)
+    assert_equal(['singular', '%d time'], g4)
+    assert_equal([nil, '%d times'], 
+           g4.collect{|m| m.respond_to?(:plural) ? m.plural : nil})
   end
 
 end

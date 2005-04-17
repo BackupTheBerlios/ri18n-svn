@@ -1,15 +1,4 @@
 
-class  Hash
-  
-  def po_format
-    ret = ''
-    each{|id, str| ret << "msgid \"#{id}\"\nmsgstr \"#{str}\"\n\n"}
-    ret
-  end
-
-end
-
-
 class String
   def interpolate(b)
     eval('"' + self + '"', b)
