@@ -12,7 +12,7 @@ class I18nService
   attr_accessor :table
   attr_accessor :po_dir
   
-	MSG_PATTERN = /_i?\('(.+?)'\)/m
+	MSG_PATTERN = /(?:n_|_|_i)\('(.+?)'\)/m
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
 	PLURAL_FAMILIES = {

@@ -2,9 +2,12 @@ $: << File.dirname(__FILE__) + '/../../lib'
 
 require 'gettext'
 require 'i18nconfig'
+require 'i18nservice'
 
 desc "Collect text to translate and update translation catalogs"
 task :gettext do
   fl = I18nFileList['app.rb']
-  fl.update
+	msg_list = fl.gettext
+  I18nService.instance.write_pot(msg_list)
+	I18nService.instance.update_catalogs(msg_list)
 end
