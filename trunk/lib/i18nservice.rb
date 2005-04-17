@@ -128,7 +128,8 @@ class I18nService
 end
 
 
-# set the default lang to nil; this is needed so that translators get loaded
+# this is needed so that translators and plural forms get loaded
 # even if the app that uses i18nservice does not set a language
+load 'ri18n/plural_forms.rb'
 load 'ri18n/translators.rb' 
 
