@@ -4,7 +4,7 @@ require 'rubygems'
 require 'rake'
 
 class GettextScanner < String
-  MSG_PATTERN = /(?:n_|_|_i)\('(.+?)'\)/m
+  MSG_PATTERN = /\W(?:n_|_|_i)\('(.+?)'\)/m
 	
 	def GettextScanner::Gettext(source)
 		GettextScanner.new(source).gettext
