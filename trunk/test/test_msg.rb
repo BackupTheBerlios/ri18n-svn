@@ -72,4 +72,26 @@ msgstr[1] "%i fichiers"
 END_PO
     assert_equal expect, str.po_format('%i file')
   end
+
+  def test_pot_format_singular
+    id = Msg.new('message id', nil)
+    expect = <<END_PO
+msgid "message id"
+msgstr ""
+
+END_PO
+    assert_equal expect, id.pot_format
+  end
+
+  def test_pot_format_plural
+    str = Msg.new("%i file", nil, '%i files')
+    expect = <<END_PO
+msgid "%i file"
+msgid_plural "%i files"
+msgstr[0] ""
+msgstr[1] ""
+
+END_PO
+    assert_equal expect, str.pot_format(2)
+  end
 end

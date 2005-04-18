@@ -51,10 +51,10 @@ class Msg < String
     end
   end
   
-   def pot_format(nplurals)
+   def pot_format(nplurals=nil)
     if @id_plural
       memo = ''
-      (0..nplurals).each{|i| memo << %Q'msgstr[#{i}] ""\n' }
+      (0...nplurals).each{|i| memo << %Q'msgstr[#{i}] ""\n' }
       %Q(msgid "#{self}"\nmsgid_plural "#{@id_plural}"\n#{memo}\n)
     else
       %Q(msgid "#{self}"\nmsgstr ""\n\n)
