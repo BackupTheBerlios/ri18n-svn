@@ -45,6 +45,7 @@ class I18nService
 		end
 	end
 	
+# execute code bloc in the PO dir
   def in_po_dir
     wd = Dir.getwd
     ret = nil
@@ -56,6 +57,7 @@ class I18nService
     end
     ret
   end
+  
   # access the po files
   def each_file
     in_po_dir do
@@ -70,10 +72,11 @@ class I18nService
     ret.collect{|path| File.basename(path, FILE_SUFFIX)}.sort
   end  
   
+# for all availables catalogues, add messages that do not already exist in  
   def update_catalogs(new_msgs)
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
-  
+#   add messages that do not already exist in the 'lang' catalog
   def update(lang, new_msg)
     self.lang = lang
     new_msg_table = {}
@@ -86,12 +89,14 @@ class I18nService
     lang + FILE_SUFFIX
   end
   
+# Read and parse a PO file
   def read_po(fn)
     in_po_dir do
       PoSource.new(File.read(fn)).parse
     end
   end
   
+# tries to load the PO file for the actual language (@lang)
   def try_load
     loaded = true	
     if @lang and @lang.kind_of?(String) then
@@ -105,7 +110,8 @@ class I18nService
     end
     loaded
   end
-    
+  
+# write the actual catalog in a PO file
   def write_po(lang)
     fname = filename(lang)
     in_po_dir do
@@ -116,7 +122,7 @@ class I18nService
     end
   end
   
-  # write a formated file with the english strings to translate
+# write a PO template file (POT)
   def write_pot(t)
     fname = 'en.pot'
     in_po_dir do

@@ -14,5 +14,8 @@ end
 Rake::RDocTask.new do |rd|
     rd.main = "README"
     rd.rdoc_files.include("README", "lib/**/*.rb")
-    system('scp -r -C html/* dm1@shell.berlios.de:/home/groups/ri18n/htdocs/rdoc')
+end
+
+task :web => [:rdoc] do
+  system('scp -r -C html/* dm1@shell.berlios.de:/home/groups/ri18n/htdocs/rdoc')
 end
