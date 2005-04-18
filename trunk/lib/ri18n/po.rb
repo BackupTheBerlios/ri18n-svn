@@ -33,6 +33,7 @@ class PoSource < String
   def parse
     @table = {}
     self.split(ENTRY_SEP).each{|entry|
+      next if entry.strip.empty?
       id, msg = Msg::Parse(entry)
       @table[id] = msg
     }

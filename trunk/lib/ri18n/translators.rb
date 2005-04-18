@@ -17,7 +17,7 @@ def n_(msgid, msgid_plural, n)
 	if ret = I18nService.instance.table[msgid]
 		sprintf(ret.plurals[plural_form(n)], n)
   else
-		sprintf(msgid_plural, n)
+		sprintf(n == 1 ? msgid : msgid_plural, n)
 	end
 end
 
