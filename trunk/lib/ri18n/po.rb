@@ -2,32 +2,29 @@ require 'ri18n/msg'
 
 class  Array
   
-  def pot_format
+  def pot_format(nplurals)
     ret = ''
     each{|x| 
-      ret << if x.respond_to?(:id_plural) and x.id_plural
-         %Q(msgid "#{x}"\nmsgid_plural "#{x.id_plural}"\nmsgstr ""\n\n)
-             else
-         %Q(msgid "#{x}"\nmsgstr ""\n\n)
-             end
+      ret << x.pot_format(nplurals)
 }
     ret
   end
 
 end
+
 class  Hash
   
   def po_format
     ret = ''
-    each{|x, str| 
-      ret << if x.respond_to?(:id_plural) and x.id_plural
-         %Q(msgid "#{x}"\nmsgid_plural "#{x.id_plural}"\nmsgstr "#{str}"\n\n)
-             else
-         %Q(msgid "#{x}"\nmsgstr "#{str}"\n\n)
-             end
+    each{|id, str| 
+      if str.respond_to? :po_format
+        ret << str.po_format(id)
+      else
+        ret << Msg.new(str.to_s, nil).po_format(id)
+      end
     }
     ret
-  end
+  end 
 
 end
 

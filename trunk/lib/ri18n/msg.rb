@@ -1,17 +1,7 @@
-# class IdPlural < String
-#   attr_reader :plural
-#   def initialize(x, id_plural)
-#     super(x)
-#     @plural = id_plural
-#   end
-#   def plural
-#     @plural
-#   end
-# end
 
 class Msg < String
   attr_reader :comments, :reference, :flag
-  attr_accessor :plurals, :id_plural
+  attr_accessor :plurals, :id_plural, :str
   ENTRY_REGEXP = /(#[.,:]?\s*.*?\n)?msgid\s+(.+?)msg(id_plural|str)\s+(.*)/m
   def Msg::Parse(entry)
       all, com, id, sel, str = *(ENTRY_REGEXP.match(entry))
@@ -34,6 +24,7 @@ class Msg < String
   end
   
   def initialize(msg, comments, idp=nil, pl=nil)
+# args = { :comments => nil, :id_plural => nil,  :plurals => nil}
     super(msg)
     @comments = comments
     parse_comments if @comments
@@ -49,5 +40,26 @@ class Msg < String
                r[2..-1].strip
             end
   end
+  
+  def po_format(id)
+    if @id_plural
+      memo = ''
+      @plurals.each_with_index{|pl, i| memo << %Q'msgstr[#{i}] "#{pl}"\n' }
+      %Q(msgid "#{id}"\nmsgid_plural "#{@id_plural}"\n#{memo}\n)
+    else
+      %Q(msgid "#{id}"\nmsgstr "#{self}"\n\n)
+    end
+  end
+  
+   def pot_format(nplurals)
+    if @id_plural
+      memo = ''
+      (0..nplurals).each{|i| memo << %Q'msgstr[#{i}] ""\n' }
+      %Q(msgid "#{self}"\nmsgid_plural "#{@id_plural}"\n#{memo}\n)
+    else
+      %Q(msgid "#{self}"\nmsgstr ""\n\n)
+    end
+  end
+ 
 end
 

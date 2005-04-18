@@ -11,6 +11,7 @@ class I18nService
   attr_accessor :lang
   attr_accessor :table
   attr_accessor :po_dir
+  attr_accessor :nplurals
   
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
@@ -121,7 +122,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << t.pot_format   
+        f << t.pot_format(@nplurals)
       }
     end
   end

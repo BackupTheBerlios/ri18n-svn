@@ -51,4 +51,25 @@ ENTRY_END
     assert_equal 'flag...', m.flag
   end
   
+  def test_po_format_singular
+    str = Msg.new('translated message', nil)
+    expect = <<END_PO
+msgid "message"
+msgstr "translated message"
+
+END_PO
+    assert_equal expect, str.po_format('message')
+  end
+
+  def test_po_format_plural
+    str = Msg.new("", nil, '%i files', ['%i fichier', '%i fichiers'])
+    expect = <<END_PO
+msgid "%i file"
+msgid_plural "%i files"
+msgstr[0] "%i fichier"
+msgstr[1] "%i fichiers"
+
+END_PO
+    assert_equal expect, str.po_format('%i file')
+  end
 end
