@@ -1,4 +1,17 @@
+# class IdPlural < String
+#   attr_reader :plural
+#   def initialize(x, id_plural)
+#     super(x)
+#     @plural = id_plural
+#   end
+#   def plural
+#     @plural
+#   end
+# end
+
 class Msg < String
+  attr_reader :comments, :reference, :flag
+  attr_accessor :plurals, :id_plural
   ENTRY_REGEXP = /(#[.,:]?\s*.*?\n)?msgid\s+(.+?)msg(id_plural|str)\s+(.*)/m
   def Msg::Parse(entry)
       all, com, id, sel, str = *(ENTRY_REGEXP.match(entry))
@@ -20,12 +33,10 @@ class Msg < String
     Msg.new(plurals[0], com, idp.strip_q, plurals)
   end
   
-  attr_reader :comments, :reference, :flag
-  attr_accessor :plurals, :id_plural
   def initialize(msg, comments, idp=nil, pl=nil)
     super(msg)
     @comments = comments
-    parse_comments
+    parse_comments if @comments
     @id_plural = idp
     @plurals = pl
   end

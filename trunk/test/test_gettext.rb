@@ -45,7 +45,7 @@ END_SOURCE
     g4 = GettextScanner::Gettext(S4)
     assert_equal(['singular', '%d time'], g4)
     assert_equal([nil, '%d times'], 
-           g4.collect{|m| m.respond_to?(:plural) ? m.plural : nil})
+           g4.collect{|m| m.id_plural })
   end
 
 end

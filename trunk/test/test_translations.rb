@@ -156,7 +156,7 @@ class TranslationTest < Test::Unit::TestCase
   end
 
   def test_update
-    I18N.update('xx', {'red' => nil, 'blue' => nil})
+    I18N.update('xx', ['red', 'blue'])
     assert_equal({'blue' => 'bleu', 'red' => nil,
                   'summer' => 'été', 'untranslated' => nil}, I18N.table)
   end

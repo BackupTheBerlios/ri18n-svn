@@ -2,6 +2,24 @@
 require 'test/unit'
 require 'ri18n/po'
 
+class PoFormatTest < Test::Unit::TestCase
+  def test_po_format
+    x = Msg.new('%d time', nil, '%d times')
+    msg_list = {'singular' => nil, x => nil}
+    plurals = {x => '%d times'}
+    expected = <<END_PO
+msgid "singular"
+msgstr ""
+
+msgid "%d time"
+msgid_plural "%d times"
+msgstr ""
+
+END_PO
+    assert_equal expected, msg_list.po_format(plurals)
+  end
+end
+
 class PoSourceTest < Test::Unit::TestCase
   
   P1 = <<PO_END

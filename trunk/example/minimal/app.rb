@@ -1,9 +1,12 @@
 #!/usr/bin/env ruby
 
+$KCODE = 'u'
+
 $: << File.dirname(__FILE__) + '/../../lib'
 
 require 'i18nservice'
 require 'i18nconfig'
+
 
 
 class Duck
@@ -14,15 +17,24 @@ class Duck
   def walk
     puts _('I walk like a duck')
   end
+  def eat_worms
+    0.upto(4) do |i|
+      puts n_('I ate %i worm', 'I ate %i worms', i)
+    end
+  end
+  def live
+    talk
+    walk
+    eat_worms
+  end
 end
 
 duck = Duck.new
 
-duck.talk
-duck.walk
+duck.live
 
 puts "----------- I18nService.instance.lang = 'fr' ----------------------"
 I18nService.instance.lang = 'fr'
 
-duck.talk
-duck.walk
+duck.live
+

@@ -32,6 +32,6 @@ unless i18n.try_load
   end
 
 	def n_(msgid, msgid_plural, n)
-		sprintf(msgid_plural, n)
+		sprintf(n == 1 ? msgid : msgid_plural, n)
 	end
 end

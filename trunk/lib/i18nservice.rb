@@ -73,9 +73,11 @@ class I18nService
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
   
-  def update(lang, new_msgs)
+  def update(lang, new_msg)
     self.lang = lang
-    @table = new_msgs.update(@table)
+    new_msg_table = {}
+    new_msg.each{|m| new_msg_table[m] = nil }
+    @table = new_msg_table.update(@table)
     write_po(lang)
   end
   
@@ -119,7 +121,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << t.po_format   
+        f << t.pot_format   
       }
     end
   end

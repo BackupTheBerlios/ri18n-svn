@@ -1,8 +1,8 @@
 $: << File.dirname(__FILE__) + '/../../lib'
 
 require 'gettext'
-require 'i18nconfig'
 require 'i18nservice'
+require 'i18nconfig'
 
 desc "Collect text to translate and update translation catalogs"
 task :gettext do

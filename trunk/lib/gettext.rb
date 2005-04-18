@@ -1,15 +1,9 @@
 
 require 'ri18n/standard_exts'
+require 'ri18n/msg'
 require 'rubygems'
 require 'rake'
 
-class IdPlural < String
-  attr_reader :plural
-  def initialize(id, id_plural)
-    super(id)
-    @plural = id_plural
-  end
-end
 
 class GettextScanner < String
   SINGLE = "'(.+?)'"
@@ -23,15 +17,16 @@ class GettextScanner < String
 	
   def gettext
 		ret = (scan(MSG_PATTERN_SINGLE) + scan(MSG_PATTERN_DOUBLE)).flatten.uniq.sort
-	  plur = scan(MSG_PATTERN_PLURAL).uniq.collect!{|m|
+	  plur = scan(MSG_PATTERN_PLURAL).uniq
+    ret += plur.sort
+    ret.collect{|m|
       case m
       when String
-        m
+        Msg.new(m, nil)
       when Array
-        IdPlural.new(*m)
+        Msg.new(m[0], nil, m[1])
       end
     }
-    ret + plur.sort
   end
 end
 
@@ -45,10 +40,7 @@ class I18nFileList < Rake::FileList
         list += GettextScanner::Gettext(f.read)
       end
     }
-    list.uniq!
-    ret = Hash.new
-    list.each{|m| ret[m] = nil}
-    ret
+    list.uniq
   end
 end
 
