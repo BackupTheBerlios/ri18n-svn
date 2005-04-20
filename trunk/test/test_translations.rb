@@ -81,7 +81,7 @@ END_PO
 
   def test_load
     assert_equal({'hello' => 'salut', 'two' => 'deux', 'blue' => 'bleu',
-                  'untranslated' => nil }, I18N.read_po('iotest'))
+                  'untranslated' => "" }, I18N.read_po('iotest'))
   end
 
   def test_interp
@@ -97,7 +97,7 @@ class TranslationTest < Test::Unit::TestCase
   def setup
     interp_setup
     I18N.lang='xx'
-    I18N.table = {'blue' => 'bleu', 'summer' => 'été', 'untranslated' => nil}
+    I18N.table = {'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""}
     I18N.write_po('xx')
 
     I18N.lang = nil
@@ -148,17 +148,21 @@ class TranslationTest < Test::Unit::TestCase
     assert_equal('summer', _('summer'))
 
     I18N.lang = "xx"
-    assert_equal({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => nil}, I18N.table)
+    assert_equal({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""}, I18N.table)
     assert_equal('bleu', _('blue'))
     assert_equal('untranslated', _('untranslated'))
     assert_equal('été', _('summer'))
 
   end
-
+  
   def test_update
-    I18N.update('xx', ['red', 'blue'])
-    assert_equal({'blue' => 'bleu', 'red' => nil,
-                  'summer' => 'été', 'untranslated' => nil}, I18N.table)
+    new_messages = ['red', 'blue'].collect{|m| Msg.new(m, nil)}
+    new_messages << Msg.new('%i file', nil, '%i files')
+    I18N.update('xx', new_messages)
+    assert_equal({'blue' => 'bleu', 'red' => "",
+                  'summer' => 'été', 'untranslated' => "",
+                  '%i file' => ""}, I18N.table)
+    assert_equal('%i files', I18N.table['%i file'].id_plural)
   end
 
   def test_simple

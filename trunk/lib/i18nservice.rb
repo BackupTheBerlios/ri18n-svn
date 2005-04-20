@@ -79,9 +79,9 @@ class I18nService
 #   add messages that do not already exist in the 'lang' catalog
   def update(lang, new_msg)
     self.lang = lang
-    new_msg_table = {}
-    new_msg.each{|m| new_msg_table[m] = nil }
-    @table = new_msg_table.update(@table)
+    new_ids = {}
+    new_msg.each{|m| new_ids[m] = Msg.new("", nil, m.id_plural)}
+    new_msg.each{|m| @table[m] =  new_ids[m] unless @table.has_key?(m)}
     write_po(lang)
   end
   
@@ -117,7 +117,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << @table.po_format   
+        f << @table.po_format(@nplurals)
       }
     end
   end

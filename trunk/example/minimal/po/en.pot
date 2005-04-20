@@ -9,5 +9,6 @@ msgstr ""
 
 msgid "I ate %i worm"
 msgid_plural "I ate %i worms"
-msgstr ""
+msgstr[0] ""
+msgstr[1] ""
 

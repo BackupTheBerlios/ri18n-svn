@@ -1,7 +1,7 @@
 case I18nService.instance.plural_family
 	when :one
   I18nService.instance.nplurals = 1
-	def plural_form(n)
+  def plural_form(n)
 		0
 	end
 	when :two_germanic

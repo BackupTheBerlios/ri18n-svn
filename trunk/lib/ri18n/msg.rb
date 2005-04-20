@@ -9,7 +9,8 @@ class Msg < String
       id.strip_q!
       if sel == 'str'
         str.strip_q!
-        msg = ((str.empty?) ? nil : Msg.new(str, com ) )
+# msg = ((str.empty?) ? nil : Msg.new(str, com ) )
+        msg = Msg.new(str, com)
         [id, msg]
       else 
         [id, Msg::Plurals(str, com)]
@@ -41,10 +42,15 @@ class Msg < String
             end
   end
   
-  def po_format(id)
+  def po_format(id, nplurals=nil)
     if @id_plural
       memo = ''
-      @plurals.each_with_index{|pl, i| memo << %Q'msgstr[#{i}] "#{pl}"\n' }
+      if @plurals
+        pl = @plurals
+      else
+        pl = Array.new(nplurals, "")
+      end
+      pl.each_with_index{|pl, i| memo << %Q'msgstr[#{i}] "#{pl}"\n' }
       %Q(msgid "#{id}"\nmsgid_plural "#{@id_plural}"\n#{memo}\n)
     else
       %Q(msgid "#{id}"\nmsgstr "#{self}"\n\n)
