@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+require 'rake/gempackagetask'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/clean'
@@ -16,6 +18,21 @@ Rake::RDocTask.new do |rd|
     rd.rdoc_files.include("README", "lib/**/*.rb")
 end
 
-task :web => [:rdoc] do
+desc "publish Rdoc documentation"
+task :pub_rdoc => [:rdoc] do
   system('scp -r -C html/* dm1@shell.berlios.de:/home/groups/ri18n/htdocs/rdoc')
 end
+
+gemspec = eval(File.read('ri18n.gemspec'))
+Rake::GemPackageTask.new(gemspec) do |pkg|
+    pkg.need_zip = true
+    pkg.need_tar = true
+end
+
+  Rake::PackageTask.new("ri18n", gemspec.version) do |p|
+    p.need_tar = true
+    p.need_zip = true
+# the list of glob expressions for files comes from iwik.gemspec
+    p.package_files.include($__ri18n_source_patterns)
+  end
+
