@@ -1,4 +1,6 @@
-$__ri18n_source_patterns = ['[A-Z]*', 'lib/**/*', 'example/**/*']
+$__ri18n_source_patterns = ['[A-Z]*', 'ri18n.gemspec', 
+                            'rakefile', 'lib/**/*', 'example/**/*', 
+                            'test/**/*']
 
 spec = Gem::Specification.new do |s|
   s.name = 'ri18n'
@@ -21,7 +23,8 @@ spec = Gem::Specification.new do |s|
       File.directory?(path) or
       path.include?('example/') or
       path.include?('test/') or
-      path.include?('_test.rb')
+      path.include?('_test.rb') or 
+      path.include?('ri18n.gemspec') 
     }
   }.flatten
 

@@ -1,10 +1,12 @@
-#!/usr/bin/env ruby
+# Rakefile for ri18n       -*- ruby -*-
 
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/clean'
+
+CLEAN << 'pkg'  << 'html'
 
 task :default => [:test]
 
@@ -15,6 +17,7 @@ end
 
 Rake::RDocTask.new do |rd|
     rd.main = "README"
+    rd.options << '--template=jamis --line-numbers --inline-source'
     rd.rdoc_files.include("README", "lib/**/*.rb")
 end
 
