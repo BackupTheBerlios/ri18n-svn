@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'ri18n/standard_exts'
 
-class StringUnquoteTest < Test::Unit::TestCase
+class StringUnescapequoteTest < Test::Unit::TestCase
   def test_simple
     string = 'heyyyy \'blah\' yo'
     assert_equal "heyyyy 'blah' yo", string.unescape_quote
