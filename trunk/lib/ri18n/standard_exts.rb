@@ -1,7 +1,7 @@
 
 class String
   def interpolate(caller)
-    caller.instance_eval('"' + string + '"') 
+    caller.instance_eval('"' << self.gsub('"', '\"') << '"') 
   end
   
 # strip and unquote

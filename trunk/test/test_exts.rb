@@ -11,10 +11,21 @@ class StringInterpolateTest < Test::Unit::TestCase
   def test_simple
     @color = 'red'
     string = 'the horse is #{@color}'
-    assert_equal 'the horse is red', string.interpolate(binding)
+    assert_equal 'the horse is red', string.interpolate(self)
     
     @color = 'blue'
-    assert_equal 'the horse is blue', string.interpolate(binding)
+    assert_equal 'the horse is blue', string.interpolate(self)
+  end
+  
+  def test_quotes
+    @color = 'red'
+    string = %q(the horse is '#{@color}')
+    assert_equal %q(the horse is 'red'), string.interpolate(self)
+  end
+  def test_dquotes
+    @color = 'red'
+    string = %q(the horse is "#{@color}")
+    assert_equal %q(the horse is "red"), string.interpolate(self)
   end
 end
 
