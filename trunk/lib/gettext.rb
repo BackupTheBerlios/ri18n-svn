@@ -22,9 +22,9 @@ class GettextScanner < String
     ret.collect{|m|
       case m
       when String
-        Msg.new(m, nil)
+        Msg.new(m.unescape_quote, nil)
       when Array
-        Msg.new(m[0], nil, m[1])
+        Msg.new(m[0].unescape_quote, nil, m[1].unescape_quote)
       end
     }
   end

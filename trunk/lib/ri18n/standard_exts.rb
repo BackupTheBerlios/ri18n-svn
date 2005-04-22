@@ -4,6 +4,10 @@ class String
     caller.instance_eval('"' << self.gsub('"', '\"') << '"') 
   end
   
+  def unescape_quote
+    self.gsub("\\'", "'")
+  end
+  
 # strip and unquote
   def strip_q
     strip[1..-2]
