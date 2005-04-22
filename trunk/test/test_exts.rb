@@ -1,11 +1,21 @@
 require 'test/unit'
 require 'ri18n/standard_exts'
 
+class StringUnquoteTest < Test::Unit::TestCase
+  def test_simple
+    string = 'heyyyy \'blah\' yo'
+    assert_equal "heyyyy 'blah' yo", string.unescape_quote
+    
+    string = "heyyyy 'blah' yo"
+    assert_equal string, string.unescape_quote
+  end
+end
+
 class StringInterpolateTest < Test::Unit::TestCase
   
   def test_unchanged
     string = 'blah'
-    assert_equal string, string.interpolate(binding)
+    assert_equal string, string.interpolate(self)
   end
   
   def test_simple
@@ -22,6 +32,7 @@ class StringInterpolateTest < Test::Unit::TestCase
     string = %q(the horse is '#{@color}')
     assert_equal %q(the horse is 'red'), string.interpolate(self)
   end
+  
   def test_dquotes
     @color = 'red'
     string = %q(the horse is "#{@color}")
