@@ -36,6 +36,7 @@ end
   Rake::PackageTask.new("ri18n", gemspec.version) do |p|
     p.need_tar = true
     p.need_zip = true
+    p.need_tar_bz2 = true
 # the list of glob expressions for files comes from iwik.gemspec
     p.package_files.include($__ri18n_source_patterns)
   end
