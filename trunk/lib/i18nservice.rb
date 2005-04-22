@@ -76,6 +76,7 @@ class I18nService
   def update_catalogs(new_msgs)
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
+
 #   add messages that do not already exist in the 'lang' catalog
   def update(lang, new_msg)
     self.lang = lang

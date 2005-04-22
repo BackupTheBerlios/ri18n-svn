@@ -9,7 +9,6 @@ class Msg < String
       id.strip_q!
       if sel == 'str'
         str.strip_q!
-# msg = ((str.empty?) ? nil : Msg.new(str, com ) )
         msg = Msg.new(str, com)
         [id, msg]
       else 
@@ -25,7 +24,6 @@ class Msg < String
   end
   
   def initialize(msg, comments, idp=nil, pl=nil)
-# args = { :comments => nil, :id_plural => nil,  :plurals => nil}
     super(msg)
     @comments = comments
     parse_comments if @comments
