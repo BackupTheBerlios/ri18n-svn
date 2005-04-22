@@ -17,6 +17,10 @@ class GettextTest < Test::Unit::TestCase
   <%= _('hello "world') 'not "me !!'%>
   END_SOURCE
 
+  S2B = S2 + <<-END_SOURCE
+  a=<%= _('in category \'category\'')%>
+  END_SOURCE
+  
   S3 = <<-END_SOURCE
   blah blah
   <%= _i("hello world")%> ("not me !!")
@@ -48,8 +52,9 @@ class GettextTest < Test::Unit::TestCase
   end
   
   def test_quotes
-    assert_equal(%q(in category '#{@category}'), 
-    GettextScanner::Gettext(S3B).last)
+    assert_equal(%q(in category 'category'), GettextScanner::Gettext(S2B).last)
+    assert_equal(%q(in category '#{@category}'), GettextScanner::Gettext(S3B).last)
+  
   end
   
 def test_plural
