@@ -15,7 +15,7 @@ Ri18n is an internationalization and localization library for Ruby applications.
   * Translators need an utf8 capable editor to save utf8 encoded PO files.
 
 ===History:
-* See CHANGELOG
+* See CHANGES
 
 ===Resources:
 * Project homepage[http://ri18n.berlios.de/]
@@ -29,5 +29,4 @@ Ri18n is an internationalization and localization library for Ruby applications.
 * GPL
 
 ===Contact:
-Author: Denis Mertz
-Email:  dmertz at online dot de
+Author: Denis Mertz <dmertz at online dot de>

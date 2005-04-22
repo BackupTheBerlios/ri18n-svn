@@ -7,10 +7,10 @@ def _(string)
   fetch.empty? ? string : fetch
 end
 
-# string with interpolation part(s)
-def _i(string, b = self.getBinding)
+# translator for string with interpolation part(s)
+def _i(string, caller = self)
   ret = I18nService.instance.table.fetch(string, string) || string
-  ret.interpolate(b)
+  ret.interpolate(caller)
 end
 
 # plurals
@@ -29,8 +29,8 @@ unless i18n.try_load
     string
   end
 
-  def _i(string, b = self.getBinding)
-    string.interpolate(b)
+  def _i(string, caller = self)
+    string.interpolate(caller)
   end
 
 	def n_(msgid, msgid_plural, n)

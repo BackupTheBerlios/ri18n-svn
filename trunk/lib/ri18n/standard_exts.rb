@@ -1,7 +1,7 @@
 
 class String
-  def interpolate(b)
-    eval('"' + self + '"', b)
+  def interpolate(caller)
+    caller.instance_eval('"' + string + '"') 
   end
   
 # strip and unquote

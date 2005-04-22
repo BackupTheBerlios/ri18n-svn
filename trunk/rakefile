@@ -18,7 +18,8 @@ end
 Rake::RDocTask.new do |rd|
     rd.main = "README"
     rd.options << '--template=jamis --line-numbers --inline-source'
-    rd.rdoc_files.include("README", "lib/**/*.rb")
+    rd.options << '--tab-width=2 --webcvs=http://svn.berlios.de/viewcvs/ri18n/trunk/'
+    rd.rdoc_files.include("README", "CHANGES", "lib/**/*.rb")
 end
 
 desc "publish Rdoc documentation"
