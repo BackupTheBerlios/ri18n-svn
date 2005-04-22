@@ -41,7 +41,8 @@ class Msg < String
   end
   
   def po_format(id, nplurals=nil)
-    if @id_plural
+    comments = @comments ? @comments.join("\n") << "\n" : "" 
+    comments << if @id_plural
       memo = ''
       if @plurals
         pl = @plurals

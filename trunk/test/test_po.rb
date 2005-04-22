@@ -50,4 +50,7 @@ def test_parse_one
     
   end
   
+  def test_comments_are_kept
+    assert_equal(P3.strip, PoSource.new(P3).parse.po_format(2).strip) 
+  end
 end

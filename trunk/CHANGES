@@ -2,6 +2,7 @@
 
 == Version 0.0.2
 
+* keep comments in PO files intact when updating
 * Support single quotes in translation strings
 
 == Version 0.0.1
