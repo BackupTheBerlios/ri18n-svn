@@ -1,4 +1,5 @@
 require 'ri18n/msg'
+require 'iconv'
 
 class  Array
   
@@ -6,7 +7,7 @@ class  Array
     ret = ''
     each{|x| 
       ret << x.pot_format(nplurals)
-}
+    }
     ret
   end
 
@@ -50,9 +51,19 @@ class PoSource < String
     @table = {}
     get_entries
   end
-  
+
+  def convert_to_utf8
+# return if there is was no PO header
+    return unless h = @table[""]
+    ctype = h['Content-Type']
+    ctype =~ /charset=((?:\w|\d|-)+)\z/
+    charset = Regexp.last_match(1)
+    @entries.collect!{|text| Iconv.new('utf-8', charset).iconv(text)}
+  end
+    
   def parse
     parse_header 
+    convert_to_utf8 
     @entries.each{|entry|
       next if entry.strip.empty?
       id, msg = Msg::Parse(entry)

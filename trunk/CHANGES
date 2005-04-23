@@ -2,6 +2,7 @@
 
 == Version 0.0.2
 
+* first charset conversion support (with iconv)
 * read/parse/save/write of PO headers
 * keep comments in PO files intact when updating
 * Support single quotes in translation strings

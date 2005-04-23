@@ -1,14 +1,32 @@
-msgid "I talk like a duck"
-msgstr "Je parle comme un cannard"
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2005-04-23 23:01+0100\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-12-10 22:11+0100\n"
+"MIME-Version: 1.0\n"
+"Last-Translator: dm1 <dmertz at online.de>\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+"X-Poedit-Language: French\n"
 
 msgid "Quack Quack !!"
 msgstr "Coin Coin !!"
 
+msgid "I talk like a duck"
+msgstr "Je parle comme un cannard"
+
 msgid "I walk like a duck"
-msgstr "Je marche comme un cannard l'été"
+msgstr "Je marche comme un cannard"
 
 msgid "I ate %i worm"
 msgid_plural "I ate %i worms"
-msgstr[0] "J'ai mangé %i ver"
-msgstr[1] "J'ai mangé %i vers"
+msgstr[0] "J'ai mang� %i ver"
+msgstr[1] "J'ai mang� %i vers"
 
