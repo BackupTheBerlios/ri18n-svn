@@ -20,6 +20,7 @@ class  Hash
       h = self[""].dup
       ret = h[:comments].dup
       h.delete(:comments)
+      ret << PoSource::HEADER_SPLIT
       h.each{|key, val| ret << "\"#{key}: #{val}\\n\"\n"}
       ret
     else
