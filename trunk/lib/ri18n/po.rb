@@ -30,19 +30,36 @@ end
 
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
-  def parse
+  
+  def initialize(*args)
+    super
     @table = {}
-    self.split(ENTRY_SEP).each{|entry|
+    get_entries
+  end
+  
+  def parse
+    parse_header 
+    @entries.each{|entry|
       next if entry.strip.empty?
       id, msg = Msg::Parse(entry)
       @table[id] = msg
     }
-		parse_header
     @table
   end
 
+  HEADER_SPLIT = "\n" + 'msgid ""' + "\n" + 'msgstr ""' + "\n"
 	def parse_header
-		return unless @table.has_key?(nil)
-		@table[nil]
-	end
+    return unless @entries.first.match(/\s+msgid ""\s+/m)
+    source = @entries.shift
+	  parsed_header = {}
+    source.split(HEADER_SPLIT).last.scan(/"((?:\w|-)+?):([^"]+)"/){|k, v|
+      parsed_header[k.strip] = v.strip
+    }
+    parsed_header
+  end
+
+  private
+  def get_entries
+    @entries = self.split(ENTRY_SEP)
+  end
 end

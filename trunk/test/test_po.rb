@@ -26,7 +26,35 @@ PO_END
 PO_END
   E3 = E1
   
-def test_parse_one
+  PH = <<-PO_END 
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2002-12-10 22:11+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+  PO_END
+  EH = {'Project-Id-Version' => 'PACKAGE VERSION',
+        'PO-Revision-Date' => 'YEAR-MO-DA HO:MI+ZONE',
+        'POT-Creation-Date' => '2002-12-10 22:11+0100',
+        'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
+        'Language-Team' => 'LANGUAGE <LL@li.org>',
+        'MIME-Version' => '1.0',
+        'Content-Type' => 'text/plain; charset=CHARSET',
+        'Content-Transfer-Encoding' => 'ENCODING',
+}  
+  def test_parse_one
     assert_equal(E1, PoSource.new(P1).parse )
     assert_equal(E1, PoSource.new(P1 + "\n").parse )
     assert_equal(E1, PoSource.new(P1 + "\n\n").parse )
@@ -52,5 +80,9 @@ def test_parse_one
   
   def test_comments_are_kept
     assert_equal(P3.strip, PoSource.new(P3).parse.po_format(2).strip) 
+  end
+  
+  def test_parse_header
+    assert_equal(EH, PoSource.new(PH).parse_header)
   end
 end
