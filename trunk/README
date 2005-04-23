@@ -1,7 +1,6 @@
 ===What is Ri18n?
 Ri18n is an internationalization and localization library for Ruby applications.
  
-===Ri18n Features:
 * 100 % ruby. Use ruby standard tools:
   * Rake tasks for managing/updating tranlation files (PO files)
   * Ruby Gems for creating translation packages
@@ -9,9 +8,8 @@ Ri18n is an internationalization and localization library for Ruby applications.
   * Use _( ) functions for marking the strings to translate.
   * Use PO format for storing translation messages.
 * Unicode only (utf8). This means:
-  * no charset convertions in the way, no Iconv dependency.
-  * Works only with unicode applications. This should not be a problem because Ruby 
-    has excellent utf8 support.
+  * Works only with unicode applications. (Ruby 
+    has excellent utf8 support.)
   * Translators need an utf8 capable editor to save utf8 encoded PO files.
 
 ===History:
