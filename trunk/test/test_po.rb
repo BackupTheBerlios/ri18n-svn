@@ -26,13 +26,16 @@ PO_END
 PO_END
   E3 = E1
   
-  PH = <<-PO_END 
+  HC = <<-'PO_END'
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
+  PO_END
+  
+  PH = HC + <<-'PO_END'
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -45,6 +48,7 @@ msgstr ""
 "Content-Transfer-Encoding: ENCODING\n"
 
   PO_END
+  
   EH = {'Project-Id-Version' => 'PACKAGE VERSION',
         'PO-Revision-Date' => 'YEAR-MO-DA HO:MI+ZONE',
         'POT-Creation-Date' => '2002-12-10 22:11+0100',
@@ -53,7 +57,9 @@ msgstr ""
         'MIME-Version' => '1.0',
         'Content-Type' => 'text/plain; charset=CHARSET',
         'Content-Transfer-Encoding' => 'ENCODING',
-}  
+        :comments =>  HC
+        }  
+
   def test_parse_one
     assert_equal(E1, PoSource.new(P1).parse )
     assert_equal(E1, PoSource.new(P1 + "\n").parse )
@@ -83,6 +89,14 @@ msgstr ""
   end
   
   def test_parse_header
-    assert_equal(EH, PoSource.new(PH).parse_header)
+    ph = PoSource.new(PH).parse_header
+    EH.each{|key, val|
+      assert_equal(val, ph[key])
+    }
+  end
+  
+  def test_format_header
+    htable = {"" => EH}
+    assert_equal(PH, htable.po_header)
   end
 end
