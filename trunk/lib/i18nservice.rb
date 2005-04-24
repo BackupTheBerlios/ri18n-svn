@@ -5,9 +5,16 @@ require 'fileutils'
 
 require 'ri18n/standard_exts'
 require 'ri18n/po'
+require 'ri18n/langtools'
 
 class I18nService
   include Singleton
+  include LangTools
+# target language, formated like lc_cc.chenc
+# lc = two char. language code (ISO 639)
+# cc = two char. country code (ISO 3166)
+# chenc = charset encoding
+# example: 'ja_JP.eucJP'
   attr_accessor :lang
   attr_accessor :table
   attr_accessor :po_dir
