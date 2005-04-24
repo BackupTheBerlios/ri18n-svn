@@ -103,7 +103,8 @@ msgstr ""
   end
   
   def test_format_header
-    htable = {"" => EH}
-    assert_equal(PH, htable.po_header)
+    htable = PoSource.new(PH)
+    htable.parse_header
+    assert_equal(PH, htable.table.po_header)
   end
 end

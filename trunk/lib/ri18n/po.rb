@@ -13,17 +13,18 @@ class  Array
 
 end
 
+require 'pp'
 class  Hash
   
+
 # TODO: fix order of header entries
   def po_header
     if self.has_key?("")
-      h = self[""].dup
+      h = self[""]
       ret = h[:comments].dup
-      h.delete(:comments)
       ret << PoSource::HEADER_SPLIT
-      h.each{|key, val| ret << "\"#{key}: #{val}\\n\"\n"}
-      ret
+      h[:ordered_entries].each{|key| ret << "\"#{key}: #{h[key]}\\n\"\n"}
+      ret << "\n"
     else
       ''
     end
@@ -54,6 +55,8 @@ end
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
   include PoHelper
+  
+  attr_reader :table
   
   def initialize(*args)
     super
@@ -88,8 +91,10 @@ class PoSource < String
 	  parsed_header = {}
     tmp = source.split(HEADER_SPLIT)
     parsed_header[:comments] = tmp.first
+    parsed_header[:ordered_entries] = []
     tmp.last.scan(/"((?:\w|-)+?):([^"]+)\\n"/){|k, v|
       parsed_header[k.strip] = v.strip
+      parsed_header[:ordered_entries] << k.strip
     }
 # empty msgid is key for getting the parsed header
     @table[""] = parsed_header
