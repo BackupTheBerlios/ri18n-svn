@@ -13,7 +13,6 @@ class  Array
 
 end
 
-require 'pp'
 class  Hash
   
 
@@ -45,7 +44,7 @@ class  Hash
 end
 
 module PoHelper
-# parse content_type and return type and charset
+# parse content_type and return type and charset encoding
 #  "text/plain; charset=ISO-8859-2" => ['text/plain', 'ISO-8859-2']
   def parse_content_type(content_type)
     %r{((?:\w|\d|[-/])+);\s+charset=((?:\w|\d|-)+)\z}.match(content_type).to_a[1,2]
@@ -66,10 +65,10 @@ class PoSource < String
 
 # converts PO file entries to utf-8 
   def convert_to_utf8
-# return if there is was no PO headerto get a charset from
+# return if there is was no PO header to get an encoding from
     return unless h = @table[""]
-    type, charset = parse_content_type(h['Content-Type'])
-    @entries.collect!{|text| Iconv.new('utf-8', charset).iconv(text)}
+    type, encoding = parse_content_type(h['Content-Type'])
+    @entries.collect!{|text| Iconv.new('utf-8', encoding).iconv(text)}
   end
     
   

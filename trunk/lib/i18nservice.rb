@@ -12,6 +12,7 @@ class I18nService
   attr_accessor :table
   attr_accessor :po_dir
   attr_accessor :nplurals
+  attr_accessor :application_encoding
   
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
