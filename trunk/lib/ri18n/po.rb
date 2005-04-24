@@ -44,8 +44,10 @@ class  Hash
 end
 
 module PoHelper
-  def parse_content_type(ctype)
-    %r{((?:\w|\d|[-/])+);\s+charset=((?:\w|\d|-)+)\z}.match(ctype).to_a[1,2]
+# parse content_type and return type and charset
+#  "text/plain; charset=ISO-8859-2" => ['text/plain', 'ISO-8859-2']
+  def parse_content_type(content_type)
+    %r{((?:\w|\d|[-/])+);\s+charset=((?:\w|\d|-)+)\z}.match(content_type).to_a[1,2]
   end
 end
 
