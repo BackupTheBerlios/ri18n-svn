@@ -15,17 +15,6 @@ end
 
 class PluralTest < Test::Unit::TestCase
 
-	def test_plural_families
-		I18N.lang='en'
-		assert_equal :two_germanic, I18N.plural_family
-
-		I18N.lang='de'
-		assert_equal :two_germanic, I18N.plural_family
-		
-		I18N.lang='fr'	
-		assert_equal :two_romanic, I18N.plural_family
-	end
-
 	def test_plural_romanic
 		I18N.lang='fr'
 		

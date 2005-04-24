@@ -10,12 +10,7 @@ require 'ri18n/langtools'
 class I18nService
   include Singleton
   include LangTools
-# target language, formated like lc_cc.chenc
-# lc = two char. language code (ISO 639)
-# cc = two char. country code (ISO 3166)
-# chenc = charset encoding
-# example: 'ja_JP.eucJP'
-  attr_accessor :lang
+  
   attr_accessor :table
   attr_accessor :po_dir
   attr_accessor :nplurals
@@ -23,16 +18,7 @@ class I18nService
   
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
-	PLURAL_FAMILIES = {
-	:one => %w(hu ja ko tr),
-	:two_germanic => %w(da nl en de no sv et fi el he it pt es eo),
-	:two_romanic => %w(fr pt_BR),
-	:three_celtic => %w(ga gd),
-	:three_baltic_latvian => %w(lv),
-	:three_baltic_lithuanian => %w(lt),
-	:three_slavic_russian => %w(hr cs ru sk uk),
-	:three_slavic_polish => %w(pl),
-	:four => %w(sl)}
+  
   def lang=(l)
     unless ( @lang == l ) 
       @lang = l 
@@ -41,18 +27,6 @@ class I18nService
     end
   end
 
-	def plural_family
-		if @lang
-			if found = PLURAL_FAMILIES.find{|fam, list| list.include?(@lang)}
-				found.first
-			else
-				:two_germanic
-			end
-		else
-			:two_germanic	
-		end
-	end
-	
 # execute code bloc in the PO dir
   def in_po_dir
     wd = Dir.getwd
