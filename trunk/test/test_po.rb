@@ -2,6 +2,13 @@
 require 'test/unit'
 require 'ri18n/po'
 
+class PoHelperTest < Test::Unit::TestCase
+  include PoHelper
+  def test_parse_content_type
+    assert_equal(['text/plain', 'ISO-8859-2'], 
+              parse_content_type("text/plain; charset=ISO-8859-2"))
+  end
+end
 
 
 class PoSourceTest < Test::Unit::TestCase

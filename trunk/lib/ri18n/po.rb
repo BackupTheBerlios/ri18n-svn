@@ -43,24 +43,31 @@ class  Hash
 
 end
 
+module PoHelper
+  def parse_content_type(ctype)
+    %r{((?:\w|\d|[-/])+);\s+charset=((?:\w|\d|-)+)\z}.match(ctype).to_a[1,2]
+  end
+end
+
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
+  include PoHelper
   
   def initialize(*args)
     super
     @table = {}
-    get_entries
+    set_entries
   end
 
+# converts PO file entries to utf-8 
   def convert_to_utf8
-# return if there is was no PO header
+# return if there is was no PO headerto get a charset from
     return unless h = @table[""]
-    ctype = h['Content-Type']
-    ctype =~ /charset=((?:\w|\d|-)+)\z/
-    charset = Regexp.last_match(1)
+    type, charset = parse_content_type(h['Content-Type'])
     @entries.collect!{|text| Iconv.new('utf-8', charset).iconv(text)}
   end
     
+  
   def parse
     parse_header 
     convert_to_utf8 
@@ -88,7 +95,7 @@ class PoSource < String
   end
 
   private
-  def get_entries
+  def set_entries
     @entries = self.split(ENTRY_SEP)
   end
 end
