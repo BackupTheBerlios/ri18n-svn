@@ -1,4 +1,8 @@
+require 'ri18n/pohelper'
+
 class  Catalog < Hash
+  
+  include PoHelper
   
 # in PO, header is defined as empty msgstr
   def header
@@ -13,7 +17,8 @@ class  Catalog < Hash
   def header_comments
     header[:comments]
   end
-  
+
+    
   def po_header
     if header
       ret = header_comments.dup

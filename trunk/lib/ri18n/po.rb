@@ -1,4 +1,5 @@
 require 'ri18n/msg'
+require 'ri18n/pohelper'
 require 'iconv'
 
 class  Array
@@ -14,20 +15,12 @@ class  Array
 end
 
 
-module PoHelper
-# parse content_type and return type and charset encoding
-#  "text/plain; charset=ISO-8859-2" => ['text/plain', 'ISO-8859-2']
-  def parse_content_type(content_type)
-    %r{((?:\w|\d|[-/])+);\s+charset=((?:\w|\d|-)+)\z}.match(content_type).to_a[1,2]
-  end
-end
-
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
   include PoHelper
   
   attr_reader :table
-  
+  attr_reader :header
   def initialize(*args)
     super
     @table = Catalog.new
@@ -36,10 +29,6 @@ class PoSource < String
 
 # converts PO file entries to encoding *enc*
   def reencode(to_enc)
-# return if there is was no PO header to get an encoding from
-    return unless h = @table[""]
-    return unless ct = h['Content-Type']
-    type, encoding = parse_content_type(ct)
     return if encoding.downcase == to_enc.downcase
     @entries.collect!{|text| Iconv.new(to_enc, encoding).iconv(text)}
   end
@@ -70,7 +59,7 @@ class PoSource < String
     }
 # empty msgid is key for getting the parsed header
     @table[""] = parsed_header
-    parsed_header
+    @header = parsed_header
   end
 
   private
