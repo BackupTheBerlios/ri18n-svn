@@ -1,13 +1,24 @@
 class  Catalog < Hash
   
-
-# TODO: fix order of header entries
+# in PO, header is defined as empty msgstr
+  def header
+    self[""]
+  end
+  
+# ordered header entries (keys) 
+  def header_entries
+    header[:ordered_entries]
+  end
+  
+  def header_comments
+    header[:comments]
+  end
+  
   def po_header
-    if self.has_key?("")
-      h = self[""]
-      ret = h[:comments].dup
+    if header
+      ret = header_comments.dup
       ret << PoSource::HEADER_SPLIT
-      h[:ordered_entries].each{|key| ret << "\"#{key}: #{h[key]}\\n\"\n"}
+      header_entries.each{|key| ret << "\"#{key}: #{header[key]}\\n\"\n"}
       ret << "\n"
     else
       ''
