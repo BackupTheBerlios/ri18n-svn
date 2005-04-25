@@ -1,6 +1,7 @@
 
 require 'ri18n/standard_exts'
 require 'ri18n/msg'
+require 'ri18n/newmsglist'
 require 'rubygems'
 require 'rake'
 
@@ -21,14 +22,16 @@ class GettextScanner < String
     ret += plur.sort
     ret.collect{|m|
       case m
-      when String
+      when String # singular msg
         Msg.new(m.unescape_quote, nil)
-      when Array
+      when Array # plural msg
         Msg.new(m[0].unescape_quote, nil, m[1].unescape_quote)
       end
     }
   end
 end
+
+# TODO: detect app KCODE (read config file ?) and write PO and POT files accordingly 
 
 class I18nFileList < Rake::FileList
 
@@ -40,7 +43,7 @@ class I18nFileList < Rake::FileList
         list += GettextScanner::Gettext(f.read)
       end
     }
-    list.uniq
+    NewMsgList(list.uniq)
   end
 end
 

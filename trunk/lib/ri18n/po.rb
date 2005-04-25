@@ -1,19 +1,7 @@
 require 'ri18n/msg'
 require 'ri18n/pohelper'
+require 'ri18n/newmsglist'
 require 'iconv'
-
-class  Array
-  
-  def pot_format(nplurals)
-    ret = ''
-    each{|x| 
-      ret << x.pot_format(nplurals)
-    }
-    ret
-  end
-
-end
-
 
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
