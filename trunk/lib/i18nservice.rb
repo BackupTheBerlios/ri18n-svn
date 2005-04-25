@@ -89,7 +89,7 @@ class I18nService
 # Read and parse a PO file
   def read_po(fn)
     in_po_dir do
-      PoSource.new(File.read(fn)).parse
+      PoSource.new(File.read(fn)).parse(application_encoding)
     end
   end
   

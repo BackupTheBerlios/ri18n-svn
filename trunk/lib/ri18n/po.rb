@@ -63,18 +63,20 @@ class PoSource < String
     set_entries
   end
 
-# converts PO file entries to utf-8 
-  def convert_to_utf8
+# converts PO file entries to encoding *enc*
+  def reencode(to_enc)
 # return if there is was no PO header to get an encoding from
     return unless h = @table[""]
-    type, encoding = parse_content_type(h['Content-Type'])
-    @entries.collect!{|text| Iconv.new('utf-8', encoding).iconv(text)}
+    return unless ct = h['Content-Type']
+    type, encoding = parse_content_type(ct)
+    return if encoding.downcase == to_enc.downcase
+    @entries.collect!{|text| Iconv.new(to_enc, encoding).iconv(text)}
   end
     
   
-  def parse
+  def parse(app_enc='utf-8')
     parse_header 
-    convert_to_utf8 
+    reencode(app_enc)
     @entries.each{|entry|
       next if entry.strip.empty?
       id, msg = Msg::Parse(entry)
