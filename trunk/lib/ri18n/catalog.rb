@@ -30,7 +30,7 @@ class  Catalog < Hash
     end
   end
 
-  def po_format(nplurals)
+  def po_format(nplurals, app_enc='utf-8')
     ret = po_header
     each{|id, str| 
       if str.respond_to? :po_format
@@ -39,7 +39,11 @@ class  Catalog < Hash
         ret << Msg.new(str.to_s, nil).po_format(id, nplurals)
       end
       }
-    ret
+    if encoding == app_enc.downcase
+      ret
+    else
+      Iconv.new(encoding, app_enc).iconv(ret)
+    end
   end 
 
 end

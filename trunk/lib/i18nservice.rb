@@ -114,7 +114,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << @table.po_format(@nplurals)
+        f << @table.po_format(@nplurals, application_encoding)
       }
     end
   end
