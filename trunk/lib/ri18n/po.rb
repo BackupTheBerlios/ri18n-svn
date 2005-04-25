@@ -13,35 +13,6 @@ class  Array
 
 end
 
-class  Hash
-  
-
-# TODO: fix order of header entries
-  def po_header
-    if self.has_key?("")
-      h = self[""]
-      ret = h[:comments].dup
-      ret << PoSource::HEADER_SPLIT
-      h[:ordered_entries].each{|key| ret << "\"#{key}: #{h[key]}\\n\"\n"}
-      ret << "\n"
-    else
-      ''
-    end
-  end
-
-  def po_format(nplurals)
-    ret = po_header
-    each{|id, str| 
-      if str.respond_to? :po_format
-        ret << str.po_format(id, nplurals)
-      else
-        ret << Msg.new(str.to_s, nil).po_format(id, nplurals)
-      end
-    }
-    ret
-  end 
-
-end
 
 module PoHelper
 # parse content_type and return type and charset encoding
@@ -59,7 +30,7 @@ class PoSource < String
   
   def initialize(*args)
     super
-    @table = {}
+    @table = Catalog.new
     set_entries
   end
 
@@ -84,7 +55,7 @@ class PoSource < String
     }
     @table
   end
-
+  
   HEADER_SPLIT = 'msgid ""' + "\n" + 'msgstr ""' + "\n"
 	def parse_header
     return unless @entries.first.match(/\s+msgid ""\s+/m)

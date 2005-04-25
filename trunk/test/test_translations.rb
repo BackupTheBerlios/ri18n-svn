@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'test_helper'
-
+require 'ri18n/catalog'
 
 class PoPackagingTest < Test::Unit::TestCase
   def test_available
@@ -86,7 +86,8 @@ class TranslationTest < Test::Unit::TestCase
   def setup
     interp_setup
     I18N.lang='xx'
-    I18N.table = {'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""}
+    I18N.table = Catalog.new
+    I18N.table.replace({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""})
     I18N.write_po('xx')
 
     I18N.lang = nil
