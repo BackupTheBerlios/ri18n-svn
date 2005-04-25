@@ -14,8 +14,9 @@ class I18nService
   attr_accessor :table
   attr_accessor :po_dir
   attr_accessor :nplurals
-  attr_accessor :application_encoding
-  
+  attr_reader :application_encoding
+  alias_method :kcode, :application_encoding
+    
   FILE_SUFFIX = '.po'
   FILE_PATTERN = "*#{FILE_SUFFIX}"
   
@@ -27,6 +28,19 @@ class I18nService
     end
   end
 
+  def application_encoding
+    case $KCODE[0,1].downcase
+    when 'u'
+      'UTF-8'
+    when 'e'
+      'EUC-JP'
+    when 's'
+      'Shift-JIS'
+    else
+      'ASCII'
+    end
+  end
+  
 # execute code bloc in the PO dir
   def in_po_dir
     wd = Dir.getwd

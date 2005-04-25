@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-$KCODE = 'u'
-
 $: << File.dirname(__FILE__) + '/../../lib'
 
 require 'i18nservice'

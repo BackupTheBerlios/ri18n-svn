@@ -1,5 +1,4 @@
 require 'test/unit'
-
 require 'ri18n/langtools'
 
 class PluralTest < Test::Unit::TestCase
