@@ -19,7 +19,7 @@ msgstr "un"
 PO_END
   E1 = {'one' => 'un'}
   P2 = P1 + <<PO_END
- 
+
 msgid "two"
 msgstr "deux"
 PO_END
@@ -77,6 +77,10 @@ msgstr ""
     assert_equal(E2, PoSource.new(P2).parse )
     assert_equal(E2, PoSource.new(P2+ "\n").parse )
     assert_equal(E2, PoSource.new(P2+ "\n\n").parse )
+  end
+  
+  def test_formating
+    assert_equal(P2.strip, PoSource.new(P2).parse.po_format(2).strip)
   end
   
   def test_parse_with_comment

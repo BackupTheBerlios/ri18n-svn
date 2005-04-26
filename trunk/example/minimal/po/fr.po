@@ -15,18 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
-msgid "Quack Quack !!"
-msgstr "Coin Coin"
-
-
 msgid "I talk like a duck"
 msgstr ""
 
+msgid "Quack Quack !!"
+msgstr ""
 
 msgid "I walk like a duck"
-msgstr "Je marche comme un cannard"
-
+msgstr ""
 
 msgid "I ate %i worm"
 msgid_plural "I ate %i worms"

@@ -5,7 +5,7 @@ class Msg < String
   ENTRY_REGEXP = /(#[.,:]?\s*.*?\n)?msgid\s+(.+?)msg(id_plural|str)\s+(.*)/m
   def Msg::Parse(entry)
       all, com, id, sel, str = *(ENTRY_REGEXP.match(entry))
-      com = com ? com.split("\n") : []
+      com = com ? com.split("\n") : nil
       id.strip_q!
       if sel == 'str'
         str.strip_q!

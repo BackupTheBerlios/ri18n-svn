@@ -32,10 +32,10 @@ class  Catalog < Hash
     end
   end
 
-# TODO: fix ordering of entries
+# TODO: test ordering of entries (also with plurals))
   def po_format(nplurals, app_enc='utf-8')
     ret = po_header
-    each{|id, str| 
+    sort.each{|id, str| 
       next if id == ""
       if str.respond_to? :po_format
         ret << str.po_format(id, nplurals)
