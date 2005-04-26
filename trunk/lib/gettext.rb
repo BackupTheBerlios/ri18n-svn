@@ -43,7 +43,7 @@ class I18nFileList < Rake::FileList
         list += GettextScanner::Gettext(f.read)
       end
     }
-    NewMsgList(list.uniq)
+    NewMsgList.new(list.uniq)
   end
 end
 

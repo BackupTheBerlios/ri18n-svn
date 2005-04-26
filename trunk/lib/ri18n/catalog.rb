@@ -21,18 +21,22 @@ class  Catalog < Hash
     
   def po_header
     if header
-      ret = header_comments.dup
-      ret << PoSource::HEADER_SPLIT
-      header_entries.each{|key| ret << "\"#{key}: #{header[key]}\\n\"\n"}
-      ret << "\n"
+      ret = header_comments ? header_comments.dup.strip + "\n" : ''
+      unless  header_entries.empty?
+        ret << PoSource::HEADER_SPLIT
+        header_entries.each{|key| ret << "\"#{key}: #{header[key]}\\n\"\n"}
+        ret << "\n"
+      end
     else
       ''
     end
   end
 
+# TODO: fix ordering of entries
   def po_format(nplurals, app_enc='utf-8')
     ret = po_header
     each{|id, str| 
+      next if id == ""
       if str.respond_to? :po_format
         ret << str.po_format(id, nplurals)
       else

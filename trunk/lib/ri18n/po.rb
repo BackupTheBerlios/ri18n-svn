@@ -1,6 +1,7 @@
 require 'ri18n/msg'
 require 'ri18n/pohelper'
 require 'ri18n/newmsglist'
+require 'ri18n/catalog'
 require 'iconv'
 
 class PoSource < String
@@ -35,6 +36,7 @@ class PoSource < String
   
   HEADER_SPLIT = 'msgid ""' + "\n" + 'msgstr ""' + "\n"
 	def parse_header
+    return if @entries.size == 0
     return unless @entries.first.match(/\s+msgid ""\s+/m)
     source = @entries.shift
 	  parsed_header = {}
