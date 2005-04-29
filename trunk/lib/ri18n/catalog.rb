@@ -19,7 +19,7 @@ class  Catalog < Hash
   end
 
     
-  def po_header
+  def po_header(nplurals, app_enc)
     if header
       ret = header_comments ? header_comments.dup.strip + "\n" : ''
       unless  header_entries.empty?
@@ -28,13 +28,32 @@ class  Catalog < Hash
         ret << "\n"
       end
     else
-      ''
+      <<-EOS
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n"
+"POT-Creation-Date: 2002-12-10 22:11+0100\\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"
+"Language-Team: LANGUAGE <LL@li.org>\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=#{app_enc}\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"Plural-Forms: nplurals=#{nplurals}; plural=n == 0;\\n"
+
+      EOS
     end
   end
 
 # TODO: test ordering of entries (also with plurals))
   def po_format(nplurals, app_enc='utf-8')
-    ret = po_header
+    ret = po_header(nplurals, app_enc)
     sort.each{|id, str| 
       next if id == ""
       if str.respond_to? :po_format

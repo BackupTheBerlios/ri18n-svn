@@ -13,6 +13,12 @@ class PoPackagingTest < Test::Unit::TestCase
   end
 end
 
+  def assert_catalog_content_is(expected, catalog)
+    cont = catalog.dup
+    cont.delete("")
+    assert_equal(expected, cont)
+  end
+
 class PluralTest < Test::Unit::TestCase
 
 	def test_plural_romanic
@@ -57,7 +63,6 @@ END_PO
                 f << po
       }
     end
-    interp_setup
 
   end
 
@@ -65,20 +70,14 @@ END_PO
     I18N.in_po_dir do
       File.delete('iotest') if test(?f, 'iotest')
     end
-    interp_teardown
   end
 
   def test_load
-    assert_equal({'hello' => 'salut', 'two' => 'deux', 'blue' => 'bleu',
+    assert_catalog_content_is({'hello' => 'salut', 'two' => 'deux', 'blue' => 'bleu',
                   'untranslated' => "" }, I18N.read_po('iotest'))
   end
 
-  def test_interp
-    assert_equal({'#{@interpolation} test' => 'test #{@interpolation}',
-                 'blue' => 'bleu'}, I18N.read_po('iotest_interp.po'))
-  end
-
-
+  
 end
 
 class TranslationTest < Test::Unit::TestCase
@@ -113,7 +112,7 @@ class TranslationTest < Test::Unit::TestCase
 
   def test_interp
     I18N.lang = 'iotest_interp'
-    assert_equal({'#{@interpolation} test' => 'test #{@interpolation}',
+    assert_catalog_content_is({'#{@interpolation} test' => 'test #{@interpolation}',
                  'blue' => 'bleu'}, I18N.table)
     assert_equal('bleu', _('blue'))
     assert_equal('red', _('red'))
@@ -132,13 +131,14 @@ class TranslationTest < Test::Unit::TestCase
   end
 
   def test_load_and_save
-    assert_equal({}, I18N.table)
+    assert_catalog_content_is({}, I18N.table)
     assert_equal('blue', _('blue'))
     assert_equal('untranslated', _('untranslated'))
     assert_equal('summer', _('summer'))
 
     I18N.lang = "xx"
-    assert_equal({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""}, I18N.table)
+    assert_catalog_content_is({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""},
+                                I18N.table)
     assert_equal('bleu', _('blue'))
     assert_equal('untranslated', _('untranslated'))
     assert_equal('été', _('summer'))
@@ -149,7 +149,7 @@ class TranslationTest < Test::Unit::TestCase
     new_messages = ['red', 'blue'].collect{|m| Msg.new(m, nil)}
     new_messages << Msg.new('%i file', nil, '%i files')
     I18N.update('xx', new_messages)
-    assert_equal({'blue' => 'bleu', 'red' => "",
+    assert_catalog_content_is({'blue' => 'bleu', 'red' => "",
                   'summer' => 'été', 'untranslated' => "",
                   '%i file' => ""}, I18N.table)
     assert_equal('%i files', I18N.table['%i file'].id_plural)

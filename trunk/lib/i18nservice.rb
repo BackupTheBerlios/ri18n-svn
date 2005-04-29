@@ -13,7 +13,6 @@ class I18nService
   
   attr_accessor :table
   attr_accessor :po_dir
-  attr_accessor :nplurals
   attr_reader :application_encoding
   alias_method :kcode, :application_encoding
     
@@ -72,13 +71,29 @@ class I18nService
   def update_catalogs(new_msgs)
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
-
+  
+  def create_catalogs(new_msg, new_langs)
+# dont overwrite existing catalogs
+    new_langs =  new_langs.dup - available_languages
+    new_langs.each{|l|
+      @lang = l
+      @table = Catalog.new
+      update_catalog(new_msg)
+      write_po(l)
+    }
+  end
+  
+  def update_catalog(new_msg)
+      new_ids = {}
+      empty_plurals = []
+      nplural.times do empty_plurals << "" end
+      new_msg.each{|m| new_ids[m] = Msg.new("", nil, m.id_plural, empty_plurals )}
+      new_msg.each{|m| @table[m] =  new_ids[m] unless @table.has_key?(m)}
+  end
 #   add messages that do not already exist in the 'lang' catalog
   def update(lang, new_msg)
     self.lang = lang
-    new_ids = {}
-    new_msg.each{|m| new_ids[m] = Msg.new("", nil, m.id_plural)}
-    new_msg.each{|m| @table[m] =  new_ids[m] unless @table.has_key?(m)}
+    update_catalog(new_msg)
     write_po(lang)
   end
   
@@ -114,7 +129,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << @table.po_format(@nplurals, application_encoding)
+        f << @table.po_format(nplural, application_encoding)
       }
     end
   end
@@ -125,7 +140,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << t.pot_format(@nplurals, application_encoding)
+        f << t.pot_format(nplural, application_encoding)
       }
     end
   end

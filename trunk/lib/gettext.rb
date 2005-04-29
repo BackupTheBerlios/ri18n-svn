@@ -47,12 +47,14 @@ module Rake
 
 # an array of file names (a FileList is acceptable) that will be scanned for i18n strings
     attr_accessor :source_files
-
+# an array of languages (locales) for wich you want a new catalog 
+   attr_accessor :new_langs
 # Create a gettext task.
     def initialize(name=:gettext)
       @name = name
       @pattern = nil
       @source_files = nil
+      @new_langs = nil
       @verbose = false
       yield self if block_given?
       @pattern = '**/*.rb' if @pattern.nil? && @source_files.nil?
@@ -64,8 +66,8 @@ module Rake
       desc "Ri18n gettext task" + (@name==:gettext ? "" : " for #{@name}")
       task @name do
         msg_list = get_new_messages
-        I18nService.instance.write_pot(msg_list)
         I18nService.instance.update_catalogs(msg_list)
+        I18nService.instance.create_catalogs(msg_list, new_langs )
       end
       self
     end

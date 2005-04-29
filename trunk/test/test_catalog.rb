@@ -1,6 +1,10 @@
 require 'test/unit'
 require 'ri18n/catalog'
 
+def assert_formated_ends_with(expect, formated)
+  assert_match(/#{Regexp.escape(expect)}\z/, formated)
+end
+
 class CatalogTest < Test::Unit::TestCase
   def test_po_format
     c = Catalog.new
@@ -16,7 +20,7 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_equal expect, c.po_format(2)
+    assert_formated_ends_with(expect, c.po_format(2))
   end
 
   def test_po_format_header
@@ -42,13 +46,13 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_equal expect, c.po_format(2)
+    assert_formated_ends_with(expect, c.po_format(2))
   end
   def test_po_format_comments
     c = Catalog.new
     mid = Msg.new('été', ['# comment1', '# comment2'])
     c.replace({'blue' => 'bleu', 'summer' => mid, 'untranslated' => ""})
-    expect = <<EOS
+    expect = <<'EOS'
 msgid "blue"
 msgstr "bleu"
 
@@ -61,14 +65,14 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_equal expect, c.po_format(2)
+    assert_formated_ends_with(expect, c.po_format(2))
   end
 
   def test_po_format_plural
     c = Catalog.new
     midplural = Msg.new('toto', nil, '%i files', ['%i fichier', '%i fichiers'])
     c.replace({'blue' => 'bleu', '%i file' => midplural, 'untranslated' => ""})
-    expect = <<EOS
+    expect = <<'EOS'
 msgid "%i file"
 msgid_plural "%i files"
 msgstr[0] "%i fichier"
@@ -81,7 +85,7 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_equal expect, c.po_format(2)
+    assert_formated_ends_with(expect, c.po_format(2))
   end
 
 end

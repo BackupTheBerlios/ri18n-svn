@@ -6,8 +6,6 @@ module LangTools
 # example: 'ja_JP.eucJP'
   attr_accessor :lang
   
-# number of plural forms
-  attr_accessor :nplurals
   PLURAL_FAMILIES = {
   :one => %w(hu ja ko tr),
   :two_germanic => %w(da nl en de no sv et fi el he it pt es eo),
@@ -19,6 +17,16 @@ module LangTools
   :three_slavic_polish => %w(pl),
   :four => %w(sl)}
 
+  NPLURAL = {:one => 1,
+  :two_germanic => 2,
+  :two_romanic => 2,
+  :three_celtic => 3,
+  :three_baltic_latvian => 3,
+  :three_baltic_lithuanian => 3,
+  :three_slavic_russian => 3,
+  :three_slavic_polish => 3,
+  :four => 4  }
+  
 # the language code part from lang, eg 'ja' for @lang='ja_JP.eucJP'
   def language_code
     @lang[0,2]
@@ -53,14 +61,23 @@ module LangTools
   end
   alias_method :le, :lang_encoding
  
-  def plural_family
-    if @lang
+  def find_family
 # first seek for 'pt_BR' then for just 'pt' (for  example)
-      if found = PLURAL_FAMILIES.find{|fam, list| list.include?(language_country)} || PLURAL_FAMILIES.find{|fam, list| list.include?(language_code)}
+       if found = PLURAL_FAMILIES.find{|fam, list| list.include?(language_country)} || PLURAL_FAMILIES.find{|fam, list| list.include?(language_code)}
         found.first
       else
-        :two_germanic
+        nil
       end
+  end
+  
+# number of plural forms
+  def nplural
+    NPLURAL[plural_family]
+  end
+  
+  def plural_family
+    if @lang
+      find_family or :two_germanic
     else
       :two_germanic 
     end

@@ -1,5 +1,9 @@
 = Ri18n Changelog
 
+== Version 0.0.3
+
+* add Rake::GettextTask for defining a gettext task in a more standard way
+
 == Version 0.0.2
 
 * first charset conversion support (with iconv)
