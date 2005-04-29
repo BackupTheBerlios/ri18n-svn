@@ -4,7 +4,7 @@ require 'ri18n/msg'
 require 'ri18n/newmsglist'
 require 'rubygems'
 require 'rake'
-
+require 'rake/tasklib'
 
 class GettextScanner < String
   SINGLE = "'(.+?)'"
@@ -32,18 +32,66 @@ class GettextScanner < String
 end
 
 # TODO: detect app KCODE (read config file ?) and write PO and POT files accordingly 
+module Rake
+  
+  class GettextTask < TaskLib
+  
+# Name of gettext task. (default is :gettext)
+    attr_accessor :name
 
-class I18nFileList < Rake::FileList
+# True if verbose test output desired. (default is false)
+    attr_accessor :verbose
 
-	def gettext 
-    list = []
-    each{|fn|
-      next unless test(?f, fn)
-      File.open(fn) do |f|
-        list += GettextScanner::Gettext(f.read)
+# Glob pattern to match source files. (default is '**/*.rb')
+    attr_accessor :pattern
+
+# an array of file names (a FileList is acceptable) that will be scanned for i18n strings
+    attr_accessor :source_files
+
+# Create a gettext task.
+    def initialize(name=:gettext)
+      @name = name
+      @pattern = nil
+      @source_files = nil
+      @verbose = false
+      yield self if block_given?
+      @pattern = '**/*.rb' if @pattern.nil? && @source_files.nil?
+      define
+    end
+
+# Create the tasks defined by this task lib.
+    def define
+      desc "Ri18n gettext task" + (@name==:gettext ? "" : " for #{@name}")
+      task @name do
+        msg_list = get_new_messages
+        I18nService.instance.write_pot(msg_list)
+        I18nService.instance.update_catalogs(msg_list)
       end
-    }
-    NewMsgList.new(list.uniq)
-  end
-end
-
+      self
+    end
+    
+    def file_list # :nodoc:
+      result = []
+      result += @source_files.to_a if @source_files
+      result += FileList[ @pattern ].to_a if @pattern
+      FileList[result]
+    end
+    
+    def get_new_messages # :nodoc:
+      list = []
+      file_list.each{|fn|
+        next unless test(?f, fn)
+        File.open(fn) do |f|
+          new_strings = GettextScanner::Gettext(f.read)
+          if @verbose
+            puts "I18n messages in #{fn}:"
+            new_strings.each{|s| puts " * #{s}"}
+          end
+          list += new_strings
+        end
+      }
+      NewMsgList.new(list.uniq)
+    end
+     
+  end # class GettextTask
+end # module Rake

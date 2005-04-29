@@ -9,7 +9,7 @@ Ri18n is an internationalization and localization library for Ruby applications.
   * Use PO format for storing translation messages.
 
 ===History:
-* See CHANGES
+* See CHANGES[http://ri18n.berlios.de/rdoc/files/CHANGES.html]
 
 ===Resources:
 * {Project homepage}[http://ri18n.berlios.de]

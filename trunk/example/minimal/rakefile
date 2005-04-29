@@ -4,10 +4,9 @@ require 'gettext'
 require 'i18nservice'
 require 'i18nconfig'
 
-desc "Collect text to translate and update translation catalogs"
-task :gettext do
-  fl = I18nFileList['app.rb']
-	msg_list = fl.gettext
-  I18nService.instance.write_pot(msg_list)
-	I18nService.instance.update_catalogs(msg_list)
+task :default => :gettext
+
+Rake::GettextTask.new do |t|
+    t.source_files = ['app.rb']
+    t.verbose = true
 end
