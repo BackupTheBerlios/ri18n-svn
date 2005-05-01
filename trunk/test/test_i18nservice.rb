@@ -162,10 +162,22 @@ class TranslationTest < Test::Unit::TestCase
   end
 
   def test_create_catalogs
-    new_msg = ['red', 'summer', 'untranslated'].collect{|m| Msg.new(m, nil)}
+    new_msg = ['blue', 'red', 'summer', 'untranslated'].collect{|m| Msg.new(m, nil)}
+    
+    I18N.create_catalogs(new_msg, [])
+    assert_equal ['de', 'fr', 'xx'], I18N.available_languages
+    
     I18N.create_catalogs(new_msg, ['xx', 'yy'])
     
     assert_equal ['de', 'fr', 'xx', 'yy'], I18N.available_languages
+    I18N.lang = "yy"
+    assert_catalog_content_is({'blue' => "", 'red' => "",
+                  'summer' => "", 'untranslated' => ""}, I18N.table)
+                  
+    I18N.lang = "xx"
+    assert_catalog_content_is({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""},
+                                I18N.table)
+    
   end
   
   def test_simple
