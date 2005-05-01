@@ -1,9 +1,119 @@
-=== DRAFT
-* Install ri18n (see INSTALL)
-* populate your source code with translator functions call
-* run the 'rake gettext' task
-* copy the template file 'en.pot' to 'your_lang_code.po'
-* translate the messages in the po file 
-* add an option to your program for setting language (see example)
-* run you app
+=== Getting started with Ri18n
 
+This assumes you already installed Ri18n (see INSTALL)
+
+== Populate your source code with translator function calls
+== Configuration:
+
+Write a config file, say 'i18nconfig.rb' containing for example
+  
+    # lets go unicode, you will get less trouble 
+    $KCODE = 'u'
+    # The directory where translation files (PO files) will go 
+    I18nService.instance.po_dir = File.dirname(__FILE__) + '/po'
+
+For consistency, the same configuration file has to be require'd by your rakefile 
+(when you run the gettext task) and by your application.
+
+  
+== Write a GettextTask
+
+This assumes you are a little bit familiar with Rake.
+
+Your rakefile must contain:
+* A +require+ part:  
+  * if you installed the ri18n Gem
+    
+      require 'rubygems'
+      require_gem 'gettext'
+      require_gem 'i18nservice'
+      require 'i18nconfig'
+    
+  * if you installed ri18n 'manually'
+    
+      require 'gettext'
+      require 'i18nservice'
+      require 'i18nconfig'
+    
+* A typical GettextTask 
+
+    Rake::GettextTask.new do |t|
+        t.new_langs = ['fr', 'de', 'pl', 'lt']
+        t.source_files = ['app.rb', 'lib/**/*.rb']
+        t.verbose = true
+    end
+    
+== Run the GettextTask
+
+The default name of a GettextTask is ? ... 'gettext'. So you can just run
+
+  rake gettext
+  
+This task will:
+* Scan you source code and collect all the strings to translate
+* Create new PO files as requested by the +new_lang+ attribute of the task
+* Update the existing PO files (in +po_dir+ as defined by your config file) with 
+  new strings to translate. 
+  The existing entries already translated are of course kept.
+
+  
+== Translate the messages in the PO files 
+
+To say it short: 
+* +msgid+ is the string to translate
+* +msgstr+ is the translated string
+
+Here is an example (fr.po, without the PO header):
+
+* Before translation
+
+    msgid "I talk like a duck"
+    msgstr ""
+    
+    msgid "I walk like a duck"
+    msgstr ""
+
+    msgid "I ate %i worm"
+    msgid_plural "I ate %i worms"
+    msgstr[0] ""
+    msgstr[1] ""
+    
+* After translation    
+
+    msgid "I talk like a duck"
+    msgstr "Je parle comme un cannard"
+    
+    msgid "I walk like a duck"
+    msgstr "Je marche comme un cannard"
+
+    msgid "I ate %i worm"
+    msgid_plural "I ate %i worms"
+    msgstr[0] "J'ai mangé %i ver"
+    msgstr[1] "J'ai mangé %i vers"
+
+== Try it out
+
+=== Directly
+
+    require 'i18nconfig'
+    require 'i18nservice'
+    I18nService.instance.lang = 'fr'
+
+
+=== With a language option 
+
+    require 'optparse'
+    
+    ARGV.options do |opts|
+      opts.on('-l', '--language=lang', String,
+              'User interface is in the specified language',
+              'Default: en') { |OPTIONS[:lang]| }
+    
+     
+      opts.parse!
+
+    end
+    
+    require 'i18nconfig'
+    require 'i18nservice'
+    I18nService.instance.lang = OPTIONS[:lang]
