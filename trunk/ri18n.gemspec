@@ -1,6 +1,4 @@
-$__ri18n_source_patterns = ['[A-Z]*', 'ri18n.gemspec', 
-                            'rakefile', 'lib/**/*', 'example/**/*', 
-                            'test/**/*']
+$__ri18n_source_patterns = ['lib/**/*']
 
 spec = Gem::Specification.new do |s|
   s.name = 'ri18n'
@@ -14,17 +12,13 @@ spec = Gem::Specification.new do |s|
   s.email = 'dmertz at online dot de'
   s.homepage = 'http://ri18n.berlios.de/'
 
-  s.requirements << 'rake'
+  s.requirements << 'Rake'
   s.require_path = 'lib'
   s.rubyforge_project = "ri18n"
   
   s.files = $__ri18n_source_patterns.inject([]) { |list, glob|
    list << Dir[glob].delete_if { |path|
-      File.directory?(path) or
-      path.include?('example/') or
-      path.include?('test/') or
-      path.include?('_test.rb') or 
-      path.include?('ri18n.gemspec') 
+      File.directory?(path) 
     }
   }.flatten
 
