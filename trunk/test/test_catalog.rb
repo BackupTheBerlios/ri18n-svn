@@ -5,6 +5,12 @@ def assert_formated_ends_with(expect, formated)
   assert_match(/#{Regexp.escape(expect)}\z/, formated)
 end
 
+def assert_catalog_content_is(expected, catalog)
+  cont = catalog.dup
+  cont.delete("")
+  assert_equal(expected, cont)
+end
+
 class CatalogTest < Test::Unit::TestCase
   def test_po_format
     c = Catalog.new('fr')
@@ -86,6 +92,19 @@ msgstr ""
 
 EOS
     assert_formated_ends_with(expect, c.po_format)
+  end
+  
+  def test_update
+    new_messages = ['red', 'blue'].collect{|m| Msg.new(m, nil)}
+    new_messages << Msg.new('%i file', nil, '%i files')
+    c = Catalog.new('fr')
+    c.replace({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""})
+    c.update(new_messages)
+    assert_catalog_content_is({'blue' => 'bleu', 'red' => "",
+                  'summer' => 'été', 'untranslated' => "",
+                  '%i file' => ""}, c)
+    assert_equal('%i files', c['%i file'].id_plural)
+    assert_equal(["", ""], c['%i file'].plurals)
   end
 
 end

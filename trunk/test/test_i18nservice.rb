@@ -159,6 +159,7 @@ class TranslationTest < Test::Unit::TestCase
                   'summer' => 'été', 'untranslated' => "",
                   '%i file' => ""}, I18N.table)
     assert_equal('%i files', I18N.table['%i file'].id_plural)
+    assert_equal(["", ""], I18N.table['%i file'].plurals)
   end
 
   def test_create_catalogs
