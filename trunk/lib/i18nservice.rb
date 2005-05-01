@@ -60,6 +60,7 @@ class I18nService
     end
   end
   
+# list of languages that have a catalog in the current +po_dir+
   def available_languages
     ret = in_po_dir do
       Dir[FILE_PATTERN]
@@ -67,33 +68,29 @@ class I18nService
     ret.collect{|path| File.basename(path, FILE_SUFFIX)}.sort
   end  
   
-# for all availables catalogues, add messages that do not already exist in  
+# for all availables catalogues, add messages that do not already exist in them
   def update_catalogs(new_msgs)
     available_languages.each{|la| self.update(la, new_msgs)    }
   end
   
+# for every lang. that does not already have a catalog, create one with 
+# the +new_msg+ content
   def create_catalogs(new_msg, new_langs)
 # dont overwrite existing catalogs
     new_langs =  new_langs.dup - available_languages
     new_langs.each{|l|
       @lang = l
       @table = Catalog.new(@lang)
-      update_catalog(new_msg)
+      @table.update(new_msg)
       write_po(l)
     }
   end
   
-  def update_catalog(new_msg)
-      new_ids = {}
-      empty_plurals = []
-      nplural.times do empty_plurals << "" end
-      new_msg.each{|m| new_ids[m] = Msg.new("", nil, m.id_plural, empty_plurals )}
-      new_msg.each{|m| @table[m] =  new_ids[m] unless @table.has_key?(m)}
-  end
-#   add messages that do not already exist in the 'lang' catalog
+  
+# add messages in an existing 'lang' catalog that do not already exist in it
   def update(lang, new_msg)
     self.lang = lang
-    update_catalog(new_msg)
+    @table.update(new_msg)
     write_po(lang)
   end
   

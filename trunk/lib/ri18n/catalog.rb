@@ -75,6 +75,15 @@ msgstr ""
       Iconv.new(encoding, app_enc).iconv(ret)
     end
   end 
+  
+# update the catalog with the new_msg messages
+  def update(new_msg)
+    new_ids = {}
+    empty_plurals = []
+    nplural.times do empty_plurals << "" end
+    new_msg.each{|m| new_ids[m] = Msg.new("", nil, m.id_plural, empty_plurals )}
+    new_msg.each{|m| self[m] = new_ids[m] unless self.has_key?(m)}
+  end
 
 end
 
