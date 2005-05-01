@@ -80,25 +80,14 @@ END_PO
   
 end
 
-class TranslationTest < Test::Unit::TestCase
-  # reset to default
+class InterpTest < Test::Unit::TestCase
   def setup
     interp_setup
-    I18N.lang='xx'
-    I18N.table = Catalog.new('xx')
-    I18N.table.replace({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""})
-    I18N.write_po('xx')
-
     I18N.lang = nil
   end
-
   def teardown
-    I18N.in_po_dir do
-      File.delete(I18N.filename('xx')) if test(?f, I18N.filename('xx'))
-    end
     interp_teardown
   end
-
   def test_interp_simple
     I18N.lang = 'iotest_interp'
     @interpolation = 'toto'
@@ -108,8 +97,6 @@ class TranslationTest < Test::Unit::TestCase
     assert_equal('test tutu', _i('#{@interpolation} test') )
 
   end
-
-
   def test_interp
     I18N.lang = 'iotest_interp'
     assert_catalog_content_is({'#{@interpolation} test' => 'test #{@interpolation}',
@@ -123,6 +110,25 @@ class TranslationTest < Test::Unit::TestCase
     @interpolation = _('red')
     assert_equal('test red', _i('#{@interpolation} test') )
 
+  end
+end
+
+class TranslationTest < Test::Unit::TestCase
+  # reset to default
+  def setup
+    I18N.lang='xx'
+    I18N.table = Catalog.new('xx')
+    I18N.table.replace({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""})
+    I18N.write_po('xx')
+
+    I18N.lang = nil
+  end
+
+  def teardown
+    I18N.in_po_dir do
+      File.delete(I18N.filename('xx')) if test(?f, I18N.filename('xx'))
+      File.delete(I18N.filename('yy')) if test(?f, I18N.filename('yy'))
+    end
   end
 
 
@@ -155,6 +161,13 @@ class TranslationTest < Test::Unit::TestCase
     assert_equal('%i files', I18N.table['%i file'].id_plural)
   end
 
+  def test_create_catalogs
+    new_msg = ['red', 'summer', 'untranslated'].collect{|m| Msg.new(m, nil)}
+    I18N.create_catalogs(new_msg, ['xx', 'yy'])
+    
+    assert_equal ['de', 'fr', 'xx', 'yy'], I18N.available_languages
+  end
+  
   def test_simple
     I18N.lang = "fr"
     assert_equal('Test de cuisson', _('Cooking test'))
