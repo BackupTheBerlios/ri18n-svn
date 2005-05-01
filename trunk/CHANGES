@@ -2,6 +2,7 @@
 
 == Version 0.0.3
 
+* Not-gem packages use setup.rb for installation 
 * write gettext compatible PO headers; 
   You can now use POedit (or other translation tools) to work on PO files. 
 * add Rake::GettextTask for defining a gettext task in a more standard way
