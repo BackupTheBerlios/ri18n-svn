@@ -1,8 +1,58 @@
-=== Getting started with Ri18n
+= Getting started with Ri18n
 
-This assumes you already installed Ri18n (see INSTALL)
+This assumes you already installed Ri18n.
 
 == Populate your source code with translator function calls
+
+You can of course try first with just a few messages to translate. 
+
+=== Examples
+
+1. Pure ruby code
+
+    class Duck
+      def talk
+        puts _('I talk like a duck')
+        puts _('Quack Quack !!')
+      end
+      def walk
+        puts _('I walk like a duck')
+      end
+      def eat_worms
+        0.upto(4) do |i|
+          puts n_('I ate %i worm', 'I ate %i worms', i)
+        end
+      end
+    end
+
+2. Erb file fragments
+
+   * Simple translator 
+   
+      <%= _('Navigation Bar') %>
+        
+      <% if @page.name == "HomePage" %>
+         <%= link_to(_('Edit Page'), 
+                    {:web => @web.address, :action => 'edit', :id => @page.name}) +
+          ' | ' + link_to(_('Edit Web'), {:web => @web.address, :action => 'edit_web'}) %>
+      <% else %>
+         <%= link_to(_('Edit'), 
+                    {:web => @web.address, :action => 'edit', :id => @page.name}) %>
+      <% end %>
+      
+   * Plurals
+   
+      <% if @web.count_pages %>
+        <% total_chars = @page.content.length %>
+       (<%= n_('%i character', '%i characters', total_chars) %>)
+      <% end %>
+
+   * Translator with interpolation
+   
+        <%= _i('Unexisting pages that other pages in #{@set_name} reference') %>
+
+   
+  
 == Configuration:
 
 Write a config file, say 'i18nconfig.rb' containing for example
@@ -25,11 +75,11 @@ Your rakefile must contain:
   * if you installed the ri18n Gem
     
       require 'rubygems'
-      require_gem 'gettext'
-      require_gem 'i18nservice'
+      require 'gettext'
+      require 'i18nservice'
       require 'i18nconfig'
     
-  * if you installed ri18n 'manually'
+  * if you manually installed a '.tgz' or '.zip' ri18n package 
     
       require 'gettext'
       require 'i18nservice'
@@ -91,27 +141,56 @@ Here is an example (fr.po, without the PO header):
     msgstr[0] "J'ai mangé %i ver"
     msgstr[1] "J'ai mangé %i vers"
 
+=== About charset encoding
+
+You need to take care of the encoding of the PO file. They are created with 'utf-8' 
+encoding. It is a good idea to not change that, because you will avoid encoding 
+conversions. Encoding conversions are available in Ri18n but not well tested.
+If you want to change the encoding of a PO file (e.g. ISO-8859-2 for 'fr.po') you need to
+modify accordingly the "Content-Type" entry in the PO file header
+(e.g. "Content-Type: text/plain; charset=ISO-8859-2\n").
+
+=== Tools for editing PO files
+
+* POedit: Seems to work ok.
+* Kbabel: Seems to work but only with languages having nplural=2 plural forms
+* Emacs with po mode: not tested  
+* Your favorite editor: works always if you take care of the encoding 
+   
 == Try it out
 
-=== Directly
+Your application has to be told which language will be used. See below for examples.
+You can use only one language at a time, but the language used can be changed during the execution. 
+
+You can set the language with
+
+    I18nService.instance.lang = llang
+
+where +llang+ is a locale string like 'ja', 'ja_JP' or 'ja_JP.eucJP'
+
+Setting the language does following behind the scene:
+* loads the catalog corresponding to 'llang'
+* redefines the translator functions so that they use the loaded catalog
+* automatically redefines the plural form that corresponds to +llang+
+
+=== Set language directly
 
     require 'i18nconfig'
     require 'i18nservice'
     I18nService.instance.lang = 'fr'
 
 
-=== With a language option 
+=== Set language with a language option 
 
     require 'optparse'
+    
+    OPTIONS = {:lang => 'en'}
     
     ARGV.options do |opts|
       opts.on('-l', '--language=lang', String,
               'User interface is in the specified language',
               'Default: en') { |OPTIONS[:lang]| }
-    
-     
-      opts.parse!
-
+       opts.parse!
     end
     
     require 'i18nconfig'

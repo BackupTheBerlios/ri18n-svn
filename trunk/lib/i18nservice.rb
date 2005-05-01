@@ -41,7 +41,7 @@ class I18nService
   end
   
 # execute code bloc in the PO dir
-  def in_po_dir
+  def in_po_dir #:nodoc:
     wd = Dir.getwd
     ret = nil
     begin
@@ -54,7 +54,7 @@ class I18nService
   end
   
   # access the po files
-  def each_file
+  def each_file #:nodoc:
     in_po_dir do
       Dir[FILE_PATTERN].each{|fn| yield fn}
     end
@@ -94,7 +94,7 @@ class I18nService
     write_po(lang)
   end
   
-  def filename(lang)
+  def filename(lang) #:nodoc:
     lang + FILE_SUFFIX
   end
   
@@ -106,7 +106,7 @@ class I18nService
   end
   
 # tries to load the PO file for the actual language (@lang)
-  def try_load
+  def try_load #:nodoc:
     loaded = true	
     if @lang and @lang.kind_of?(String) then
       begin
@@ -132,7 +132,7 @@ class I18nService
   end
   
 # write a PO template file (POT)
-  def write_pot(t)
+  def write_pot(t)#:nodoc:
     fname = 'en.pot'
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
