@@ -86,8 +86,10 @@ module Rake
         File.open(fn) do |f|
           new_strings = GettextScanner::Gettext(f.read)
           if @verbose
-            puts "I18n messages in #{fn}:"
-            new_strings.each{|s| puts " * #{s}"}
+            unless new_strings.empty?
+              puts "I18n messages in #{fn}:"
+              new_strings.each{|s| puts " * #{s}"}
+            end
           end
           list += new_strings
         end

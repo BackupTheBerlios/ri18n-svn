@@ -1,7 +1,7 @@
 
 class  NewMsgList < Array
   
-  def pot_format(nplurals, app_enc)
+  def pot_format(nplural, app_enc)
     ret = <<EOS
 msgid ""
 msgstr ""
@@ -11,7 +11,7 @@ msgstr ""
 
 EOS
     each{|x| 
-      ret << x.pot_format(nplurals)
+      ret << x.pot_format(nplural)
     }
     ret
   end

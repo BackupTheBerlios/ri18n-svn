@@ -77,7 +77,7 @@ class I18nService
     new_langs =  new_langs.dup - available_languages
     new_langs.each{|l|
       @lang = l
-      @table = Catalog.new
+      @table = Catalog.new(@lang)
       update_catalog(new_msg)
       write_po(l)
     }
