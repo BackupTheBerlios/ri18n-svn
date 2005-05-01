@@ -1,9 +1,7 @@
 
-Installing Programs with setup.rb
-=================================
+== Installing Programs with setup.rb
     
-Quick Start
------------
+=== Quick Start
     
   Type this (You might needs super user previledge):
 
@@ -16,8 +14,7 @@ Quick Start
       $ ruby setup.rb all --prefix=$HOME
 
     
-Detailed Installtion Process
-----------------------------
+=== Detailed Installation Process
     
   setup.rb invokes installation by three steps.  There are
   "config", "setup" and "install".  You can invoke each steps
@@ -33,8 +30,7 @@ Detailed Installtion Process
     
   For details, see "Task Options".
     
-  Global Options
-  --------------
+====  Global Options
     
   "Global Option" is a command line option which you can use
   for all tasks.  You must give a global option before any task
@@ -51,8 +47,8 @@ Detailed Installtion Process
     --copyright
         prints copyright and quit
     
-Tasks
------
+==== Tasks
+
   These are acceptable tasks:
     all
         Invokes `config', `setup', then `install'.
@@ -70,8 +66,7 @@ Tasks
     distclean
         Removes all created files.
     
-  Task Options for CONFIG/ALL
-  ---------------------------
+====  Task Options for CONFIG/ALL
     
     --prefix=PATH
         a prefix of the installing directory path
@@ -119,8 +114,7 @@ Tasks
       ruby setup.rb config -- --with-tklib=/usr/lib/libtk-ja.so.8.0
 
     
-  Task Options for INSTALL
-  ------------------------
+====  Task Options for INSTALL
     
     --no-harm
         prints what to do and done nothing really.
