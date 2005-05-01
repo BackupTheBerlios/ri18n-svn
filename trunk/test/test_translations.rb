@@ -85,7 +85,7 @@ class TranslationTest < Test::Unit::TestCase
   def setup
     interp_setup
     I18N.lang='xx'
-    I18N.table = Catalog.new
+    I18N.table = Catalog.new('xx')
     I18N.table.replace({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""})
     I18N.write_po('xx')
 

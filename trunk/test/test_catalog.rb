@@ -7,7 +7,7 @@ end
 
 class CatalogTest < Test::Unit::TestCase
   def test_po_format
-    c = Catalog.new
+    c = Catalog.new('fr')
     c.replace({'blue' => 'bleu', 'summer' => 'été', 'untranslated' => ""})
     expect = <<EOS
 msgid "blue"
@@ -20,11 +20,11 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_formated_ends_with(expect, c.po_format(2))
+    assert_formated_ends_with(expect, c.po_format)
   end
 
   def test_po_format_header
-    c = Catalog.new
+    c = Catalog.new('fr')
     header = {:comments => "# comment1\n# comment2", 
               :ordered_entries => ['Content-Type', 'Content-Transfer-Encoding'],
               'Content-Type' => 'text/plain; charset=utf-8',
@@ -46,10 +46,10 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_formated_ends_with(expect, c.po_format(2))
+    assert_formated_ends_with(expect, c.po_format)
   end
   def test_po_format_comments
-    c = Catalog.new
+    c = Catalog.new('fr')
     mid = Msg.new('été', ['# comment1', '# comment2'])
     c.replace({'blue' => 'bleu', 'summer' => mid, 'untranslated' => ""})
     expect = <<'EOS'
@@ -65,11 +65,11 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_formated_ends_with(expect, c.po_format(2))
+    assert_formated_ends_with(expect, c.po_format)
   end
 
   def test_po_format_plural
-    c = Catalog.new
+    c = Catalog.new('fr')
     midplural = Msg.new('toto', nil, '%i files', ['%i fichier', '%i fichiers'])
     c.replace({'blue' => 'bleu', '%i file' => midplural, 'untranslated' => ""})
     expect = <<'EOS'
@@ -85,7 +85,7 @@ msgid "untranslated"
 msgstr ""
 
 EOS
-    assert_formated_ends_with(expect, c.po_format(2))
+    assert_formated_ends_with(expect, c.po_format)
   end
 
 end

@@ -104,7 +104,7 @@ class I18nService
 # Read and parse a PO file, convert encoding to application_encoding
   def read_po(fn)
     in_po_dir do
-      PoSource.new(File.read(fn)).parse(application_encoding)
+      PoSource.new(File.read(fn), @lang).parse(application_encoding)
     end
   end
   
@@ -129,7 +129,7 @@ class I18nService
     in_po_dir do
       FileUtils.cp(fname, "#{fname}.bak") if test(?f, fname)
       File.open(fname, File::CREAT|File::WRONLY|File::TRUNC){|f|
-        f << @table.po_format(nplural, application_encoding)
+        f << @table.po_format(application_encoding)
       }
     end
   end

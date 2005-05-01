@@ -68,15 +68,15 @@ msgstr ""
         }  
 
   def test_parse_one
-    assert_equal(E1, PoSource.new(P1).parse )
-    assert_equal(E1, PoSource.new(P1 + "\n").parse )
-    assert_equal(E1, PoSource.new(P1 + "\n\n").parse )
+    assert_equal(E1, PoSource.new(P1, 'fr').parse )
+    assert_equal(E1, PoSource.new(P1 + "\n", 'fr').parse )
+    assert_equal(E1, PoSource.new(P1 + "\n\n", 'fr').parse )
   end
   
   def test_parse_two
-    assert_equal(E2, PoSource.new(P2).parse )
-    assert_equal(E2, PoSource.new(P2+ "\n").parse )
-    assert_equal(E2, PoSource.new(P2+ "\n\n").parse )
+    assert_equal(E2, PoSource.new(P2, 'fr').parse )
+    assert_equal(E2, PoSource.new(P2+ "\n", 'fr').parse )
+    assert_equal(E2, PoSource.new(P2+ "\n\n", 'fr').parse )
   end
   
 # does not work anymore because header is added automatically
@@ -85,7 +85,7 @@ msgstr ""
 #   end
   
   def test_parse_with_comment
-    p3 = PoSource.new(P3).parse
+    p3 = PoSource.new(P3, 'fr').parse
     assert_equal(E3, p3)
     
     assert_respond_to(p3['one'], :comments)
@@ -97,19 +97,19 @@ msgstr ""
   end
   
   def test_comments_are_kept
-    assert_match(/#{P3.strip}\z/m, PoSource.new(P3).parse.po_format(2).strip )
+    assert_match(/#{P3.strip}\z/m, PoSource.new(P3, 'fr').parse.po_format.strip )
   end
   
   def test_parse_header
-    ph = PoSource.new(PH).parse_header
+    ph = PoSource.new(PH, 'fr').parse_header
     EH.each{|key, val|
       assert_equal(val, ph[key])
     }
   end
   
   def test_format_header
-    htable = PoSource.new(PH)
+    htable = PoSource.new(PH, 'fr')
     htable.parse_header
-    assert_equal(PH, htable.table.po_header(2, 'utf-8'))
+    assert_equal(PH, htable.table.po_header('utf-8'))
   end
 end

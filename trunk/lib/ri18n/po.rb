@@ -10,9 +10,9 @@ class PoSource < String
   
   attr_reader :table
   attr_reader :header
-  def initialize(*args)
-    super
-    @table = Catalog.new
+  def initialize(source, lang)
+    super(source)
+    @table = Catalog.new(lang)
     set_entries
   end
 

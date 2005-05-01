@@ -1,8 +1,15 @@
 require 'ri18n/pohelper'
+require 'ri18n/langtools'
 
 class  Catalog < Hash
   
   include PoHelper
+  include LangTools
+  
+  def initialize(lang)
+    super()
+    @lang=lang
+  end
   
 # in PO, header is defined as empty msgstr
   def header
@@ -19,7 +26,7 @@ class  Catalog < Hash
   end
 
     
-  def po_header(nplurals, app_enc)
+  def po_header(app_enc)
     if header
       ret = header_comments ? header_comments.dup.strip + "\n" : ''
       unless  header_entries.empty?
@@ -45,21 +52,21 @@ msgstr ""
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=#{app_enc}\\n"
 "Content-Transfer-Encoding: 8bit\\n"
-"Plural-Forms: nplurals=#{nplurals}; plural=n == 0;\\n"
+"Plural-Forms: nplurals=#{nplural}; plural=n == 0;\\n"
 
       EOS
     end
   end
 
 # TODO: test ordering of entries (also with plurals))
-  def po_format(nplurals, app_enc='utf-8')
-    ret = po_header(nplurals, app_enc)
+  def po_format(app_enc='utf-8')
+    ret = po_header(app_enc)
     sort.each{|id, str| 
       next if id == ""
       if str.respond_to? :po_format
-        ret << str.po_format(id, nplurals)
+        ret << str.po_format(id, nplural)
       else
-        ret << Msg.new(str.to_s, nil).po_format(id, nplurals)
+        ret << Msg.new(str.to_s, nil).po_format(id, nplural)
       end
       }
     if encoding == app_enc.downcase
