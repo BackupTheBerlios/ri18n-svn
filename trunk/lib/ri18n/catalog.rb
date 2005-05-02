@@ -78,6 +78,12 @@ msgstr ""
   
 # update the catalog with the new_msg messages
   def update(new_msg)
+    new_ids = Catalog.new_from_msgidlist(@lang, new_msg)
+    new_msg.each{|m| self[m] = new_ids[m] unless self.has_key?(m)}
+  end
+  
+# old version
+  def update_old(new_msg)
     new_ids = {}
     empty_plurals = []
     nplural.times do empty_plurals << "" end

@@ -12,12 +12,12 @@ class Msg < String
         msg = Msg.new(str, com)
         [id, msg]
       else 
-        [id, Msg::Plurals(str, com)]
+        [id, Msg::ParsePlurals(str, com)]
       end
   end
   
   MSGSTR_PLURAL_RE = /(.+?)(msgstr\[\d+\]\s+.+?)+/m
-  def Msg::Plurals(entry, com)
+  def Msg::ParsePlurals(entry, com)
     all, idp, pl = *(MSGSTR_PLURAL_RE.match(entry))
     plurals = pl.strip.split(/msgstr\[\d+\]/).collect!{|mp| mp.strip_q}.compact
     Msg.new(plurals[0], com, idp.strip_q, plurals)

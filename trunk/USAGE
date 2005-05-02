@@ -196,3 +196,46 @@ Setting the language does following behind the scene:
     require 'i18nconfig'
     require 'i18nservice'
     I18nService.instance.lang = OPTIONS[:lang]
+    
+== Develop your application, maintain and update PO files
+
+When you further develop your application and add strings to translate, you can
+run again 
+
+    rake gettext
+    
+This will add the new messages to translate in the PO files, of course without modifying existing entries in the PO files.
+
+* You can create new PO files for other languages every time you want. Just set 
+  the gettext task +new_langs+ attribute to the list of languages you want. 
+  See below for an example. And then run again
+
+      rake gettext
+
+
+* When you add new source files to your project 
+  --> update the +source_files+ attribute
+
+  Example: if your app now use ERB files (.rhtml extension), and you want Japanese 
+  translations then the GettextTask  may look like: 
+  
+    Rake::GettextTask.new do |t|
+        t.new_langs = ['ja']
+        t.source_files = ['app.rb', 'lib/**/*.rb', 'app/view/**/*.rhtml']
+        t.verbose = true
+    end
+
+== Release your i18n'ed application
+
+There is no support for creating 'language packs' now (eg like for KDE). 
+You need to ship the translation files along with your app. I believe this is not an 
+issue for most applications because:
+
+* PO files are plain text and thus very portable.
+* Even for complex applications, the size of PO files is 
+  probably not a problem   
+  
+You can ship Ri18n directly in your application 
+(eg in the vendor directory for a Rails app) or add a Gem dependency 
+to Ri18n if you have a gemified application.
+
