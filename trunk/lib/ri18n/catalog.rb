@@ -11,6 +11,14 @@ class  Catalog < Hash
     @lang=lang
   end
   
+  def Catalog.new_from_msgidlist(l, new_msg)
+    c = Catalog.new(l)
+    empty_plurals = []
+    c.nplural.times do empty_plurals << "" end
+    new_msg.each{|m| c[m] = Msg.new("", nil, m.id_plural, empty_plurals )}
+    c
+  end
+  
 # in PO, header is defined as empty msgstr
   def header
     self[""]
@@ -82,14 +90,5 @@ msgstr ""
     new_msg.each{|m| self[m] = new_ids[m] unless self.has_key?(m)}
   end
   
-# old version
-  def update_old(new_msg)
-    new_ids = {}
-    empty_plurals = []
-    nplural.times do empty_plurals << "" end
-    new_msg.each{|m| new_ids[m] = Msg.new("", nil, m.id_plural, empty_plurals )}
-    new_msg.each{|m| self[m] = new_ids[m] unless self.has_key?(m)}
-  end
-
 end
 
