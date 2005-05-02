@@ -23,6 +23,11 @@ class Msg < String
     Msg.new(plurals[0], com, idp.strip_q, plurals)
   end
   
+# build a new untranslated msgstr 
+  def Msg::new_untranslated(comments, id_plural, nplural)
+    Msg.new("", comments, id_plural, Array.new(nplural, "") )
+  end
+  
   def initialize(msg, comments, idp=nil, pl=nil)
     super(msg)
     @comments = comments
