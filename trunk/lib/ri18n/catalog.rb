@@ -11,13 +11,15 @@ class  Catalog < Hash
     @lang=lang
   end
   
+# creates a catalog with untranslated msgstr
+# lang is l, needed for plural forms (nplural depends on lang)
   def Catalog.new_from_msgidlist(l, new_msg)
     c = Catalog.new(l)
     new_msg.each{|m| c[m] = Msg.new_untranslated(nil, m.id_plural, c.nplural)}
     c
   end
   
-# in PO, header is defined as empty msgstr
+# in PO, header is defined as empty msgid
   def header
     self[""]
   end
