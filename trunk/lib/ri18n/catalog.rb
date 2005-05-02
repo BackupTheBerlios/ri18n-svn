@@ -13,8 +13,6 @@ class  Catalog < Hash
   
   def Catalog.new_from_msgidlist(l, new_msg)
     c = Catalog.new(l)
-    empty_plurals = []
-    c.nplural.times do empty_plurals << "" end
     new_msg.each{|m| c[m] = Msg.new_untranslated(nil, m.id_plural, c.nplural)}
     c
   end
