@@ -17,11 +17,12 @@ class GettextTest < Test::Unit::TestCase
   <%= _('hello "world') 'not "me !!'%>
   END_SOURCE
 
-  S2B = S2 + <<-END_SOURCE
+  S2B = S2 + <<-'END_SOURCE'
   a=<%= _('in category \'category\'')%>
+  b=<%= _('in category (\'category\')')%>
   END_SOURCE
   
-  S3 = <<-END_SOURCE
+  S3 = <<-'END_SOURCE'
   blah blah
   <%= _i("hello world")%> ("not me !!")
   <%= _i('hello "world') 'not "me !!' ; %> 
@@ -29,9 +30,10 @@ class GettextTest < Test::Unit::TestCase
 
   S3B = S3 + <<-'END_SOURCE'
   a=<%= _i('in category \'#{@category}\'')%>
+  b=<%= _i('in category (\'#{@category}\')')%>
   END_SOURCE
 
-  S4 = <<-END_SOURCE
+  S4 = <<-'END_SOURCE'
   blah blah _('singular')
   <%= n_("%d file", "%d files", n)%> ("not me !!")
   <%= n_('%d time', '%d times', n) 'not "me !!'%>
@@ -52,8 +54,10 @@ class GettextTest < Test::Unit::TestCase
   end
   
   def test_quotes
-    assert_equal(%q(in category 'category'), GettextScanner::Gettext(S2B).last)
-    assert_equal(%q(in category '#{@category}'), GettextScanner::Gettext(S3B).last)
+    assert_equal([%q!in category ('category')!, %q!in category 'category'!],
+                  GettextScanner::Gettext(S2B)[-2, 2])
+    assert_equal([%q!in category ('#{@category}')!, %q(in category '#{@category}')],
+                  GettextScanner::Gettext(S3B)[-2, 2])
   
   end
   

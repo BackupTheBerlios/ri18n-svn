@@ -33,7 +33,7 @@ class  Catalog < Hash
     header[:comments]
   end
 
-    
+# returns the formated PO header    
   def po_header(app_enc)
     if header
       ret = header_comments ? header_comments.dup.strip + "\n" : ''

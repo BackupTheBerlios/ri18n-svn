@@ -7,8 +7,8 @@ require 'rake'
 require 'rake/tasklib'
 
 class GettextScanner < String
-  SINGLE = "'(.+?)'"
-  DOUBLE = '"(.+?)"'
+  SINGLE = "'((?:[^\\\\]|(?:\\\\'))+?)'"
+  DOUBLE = '"((?:[^\\\\]|(?:\\\\"))+?)"'
   MSG_PATTERN_SINGLE = /\W_i?\(#{SINGLE}\)/mu
 	MSG_PATTERN_DOUBLE = /\W_i?\(#{DOUBLE}\)/mu
   MSG_PATTERN_PLURAL = /\Wn_\(#{SINGLE},\s*#{SINGLE},\s*.+?\)/mu
