@@ -9,8 +9,8 @@ require 'rake/tasklib'
 class GettextScanner < String
   SINGLE = "'((?:[^\\\\]|(?:\\\\'))+?)'"
   DOUBLE = '"((?:[^\\\\]|(?:\\\\"))+?)"'
-  MSG_PATTERN_SINGLE = /\W_i?\(#{SINGLE}\)/mu
-	MSG_PATTERN_DOUBLE = /\W_i?\(#{DOUBLE}\)/mu
+  MSG_PATTERN_SINGLE = /\W(?:N_|_|_i)\(#{SINGLE}\)/mu
+	MSG_PATTERN_DOUBLE = /\W(?:N_|_|_i)\(#{DOUBLE}\)/mu
   MSG_PATTERN_PLURAL = /\Wn_\(#{SINGLE},\s*#{SINGLE},\s*.+?\)/mu
 	def GettextScanner::Gettext(source)
 		GettextScanner.new(source).gettext

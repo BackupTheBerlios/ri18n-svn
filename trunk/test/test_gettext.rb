@@ -11,6 +11,15 @@ class GettextTest < Test::Unit::TestCase
 	(_('catch me')) [_('me too')]<%=_('only once') + _('only once')%>
   END_SOURCE
 	
+  S1N = S1 + <<-END_SOURCE
+  blah blah
+  <%= N_('N hello world')%> html stuff <%=N_('N bye bye')%>
+  'dont catch me !'  << "'nor  me !!'"
+  N__('dont catch me !')
+  (N_('N catch me')) [N_('N me too')]<%=N_('N only once') + N_('N only once')%>
+  END_SOURCE
+  
+  
   S2 = <<-END_SOURCE
 	blah blah
 	<%= _("hello world")%> ("not me !!")
@@ -61,7 +70,15 @@ class GettextTest < Test::Unit::TestCase
   
   end
   
-def test_plural
+  def test_noop
+    assert_equal(["N bye bye", "N catch me", "N hello world", 
+                  "N me too", "N only once", 
+                  "bye bye", "catch me", "hello world", 
+                   "me too", "only once",
+                  ], GettextScanner::Gettext(S1N))
+  end
+  
+  def test_plural
     g4 = GettextScanner::Gettext(S4)
     assert_equal(['singular', '%d time'], g4)
     assert_equal([nil, '%d times'], 

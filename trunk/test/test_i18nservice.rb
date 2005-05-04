@@ -162,6 +162,13 @@ class TranslationTest < Test::Unit::TestCase
     assert_equal(["", ""], I18N.table['%i file'].plurals)
   end
 
+  def test_noop
+    I18N.lang = "xx"
+    assert_equal('blue', N_('blue'))
+    assert_equal('untranslated', N_('untranslated'))
+    assert_equal('summer', N_('summer'))
+  end
+  
   def test_create_catalogs
     new_msg = ['blue', 'red', 'summer', 'untranslated'].collect{|m| Msg.new(m, nil)}
     

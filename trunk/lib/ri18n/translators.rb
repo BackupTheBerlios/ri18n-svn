@@ -30,6 +30,11 @@ def n_(msgid, msgid_plural, n)
 	end
 end
 
+# the 'noop' translator, better named 'message marker'
+def N_(msg)
+  msg
+end
+
 unless i18n.try_load
   i18n.table = {}
 # Default translator used in case where no catalog is loaded.

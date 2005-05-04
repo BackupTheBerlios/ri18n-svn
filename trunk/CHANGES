@@ -1,5 +1,7 @@
 = Ri18n Changelog
 
+* Add the N_() 'noop message marker'  
+
 == Version 0.0.3
 
 * Wrote USAGE documentation
