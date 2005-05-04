@@ -8,6 +8,12 @@ def _(string)
   fetch.empty? ? string : fetch
 end
 
+def s_(string)
+  fetch = I18nService.instance.table.fetch(string, "") 
+  fetch.empty? ? string.split('|').last : fetch
+end
+
+
 # Returns the translated +string+ if available; otherwise returns +string+
 # Does #{} interpolation on the tranlated string
 def _i(string, caller = self)

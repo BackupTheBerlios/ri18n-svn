@@ -196,6 +196,15 @@ class TranslationTest < Test::Unit::TestCase
     assert_equal('Kochtest', _('Cooking test'))
   end
 
+  def test_context
+    I18N.lang = "fr"
+    assert_equal('ouvre (fichier)', s_('file|open'))
+    assert_equal('ouvre (imprimante)', s_('printer|open'))
+    
+    assert_equal('write', s_('file|write'))
+    assert_equal('close', s_('file|close'))
+  end
+  
   def test_utf8_chars
     I18N.lang = "fr"
     assert_equal('Chaîne de Test', _('Test String'))

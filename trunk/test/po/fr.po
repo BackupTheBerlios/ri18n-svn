@@ -136,6 +136,15 @@ msgstr "le web"
 msgid "This site is running on"
 msgstr "Ce site utilise"
 
+msgid "file|open"
+msgstr "ouvre (fichier)"
+
+msgid "printer|open"
+msgstr "ouvre (imprimante)"
+
+msgid "file|close"
+msgstr ""
+
 msgid "Edit Page"
 msgstr "Édition"
 

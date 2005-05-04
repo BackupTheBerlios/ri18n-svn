@@ -1,5 +1,6 @@
 = Ri18n Changelog
 
+* Add the s_() 'disambiguation translator with context'
 * Add the N_() 'noop message marker'  
 
 == Version 0.0.3

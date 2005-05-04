@@ -19,6 +19,14 @@ class GettextTest < Test::Unit::TestCase
   (N_('N catch me')) [N_('N me too')]<%=N_('N only once') + N_('N only once')%>
   END_SOURCE
   
+  S1S = <<-END_SOURCE
+  blah blah
+  <%= s_('hello|world')%> html stuff <%=s_('bye|bye')%>
+  'dont catch me !'  << "'nor  me !!'"
+  s__('dont catch me !')
+  (s_('|catch me')) [s_('x |me too')]<%=s_('a|only once') + s_('a|only once')%>
+  <%=s_('b|only once') + s_('b|only once')%>
+  END_SOURCE
   
   S2 = <<-END_SOURCE
 	blah blah
@@ -76,6 +84,11 @@ class GettextTest < Test::Unit::TestCase
                   "bye bye", "catch me", "hello world", 
                    "me too", "only once",
                   ], GettextScanner::Gettext(S1N))
+  end
+  
+  def test_with_context
+    assert_equal(["a|only once", "bye|bye", "b|only once",
+                  "hello|world", "x |me too", "|catch me"], GettextScanner::Gettext(S1S))    
   end
   
   def test_plural
