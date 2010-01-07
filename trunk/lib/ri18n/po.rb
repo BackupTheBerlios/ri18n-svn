@@ -54,6 +54,29 @@ class PoSource < String
 
   private
   def set_entries
-    @entries = self.split(ENTRY_SEP)
+
+      newFile = [""]
+
+      self.each_line do |line|
+            if line.chomp.strip == ""
+                  if newFile.last[-2] != '"'[0] and  newFile.last != ""
+                        newFile[-1] = newFile[-1].to_s + line
+                  else
+                        if newFile.last != ""
+                              newFile[-1] = newFile[-1].chomp
+                              newFile.push("")
+                        end
+                  end
+            else
+                  newFile[-1] = newFile[-1].to_s + line
+            end
+      end
+
+      if newFile.last == ""
+            newFile.delete_at(-1)
+      end
+
+      @entries = newFile
   end
+
 end
