@@ -2,7 +2,9 @@ require 'ri18n/msg'
 require 'ri18n/pohelper'
 require 'ri18n/newmsglist'
 require 'ri18n/catalog'
-require 'iconv'
+if RUBY_VERSION =~ /^1\.8\.[0-9]$/
+  require 'iconv'
+end
 
 class PoSource < String
   ENTRY_SEP = /(?:\n\n)|(?:\n \n)/m
@@ -25,7 +27,9 @@ class PoSource < String
   
   def parse(app_enc='utf-8')
     parse_header 
-    reencode(app_enc)
+    if RUBY_VERSION =~ /^1\.8\.[0-9]$/
+      reencode(app_enc)
+    end
     @entries.each{|entry|
       next if entry.strip.empty?
       id, msg = Msg::Parse(entry)

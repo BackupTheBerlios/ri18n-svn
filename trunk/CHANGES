@@ -1,5 +1,9 @@
 = Ri18n Changelog
 
+== Version 0.0.5
+
+* Made ri18n ruby 1.9 compatible
+
 == Version 0.0.4
 
 * Add the s_() 'disambiguation translator with context'

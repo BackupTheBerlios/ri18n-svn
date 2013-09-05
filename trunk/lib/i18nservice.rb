@@ -28,16 +28,22 @@ class I18nService
   end
 
   def application_encoding
-    case $KCODE[0,1].downcase
-    when 'u'
-      'UTF-8'
-    when 'e'
-      'EUC-JP'
-    when 's'
-      'Shift-JIS'
+    if RUBY_VERSION =~ /^1\.8\.[0-9]$/
+      case $KCODE[0,1].downcase
+      when 'u'
+        'UTF-8'
+      when 'e'
+        'EUC-JP'
+      when 's'
+        'Shift-JIS'
+      else
+        'ASCII'
+      end
     else
-      'ASCII'
+      nil
     end
+   
+	
   end
   
 # execute code bloc in the PO dir
